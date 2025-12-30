@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title>Add Products</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="dashboard-header">
         <div class="container-fluid">
             <div class="welcome-section">
-                <h1>Dashboard</h1>
+                <h1>Add Products</h1>
                 <div>
                     <a href="logout.php" class="logout-btn">Logout</a>
                 </div>
@@ -82,7 +82,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">WELCOME TO DASHBOARD</h5>
+                        <h5 class="card-title">ADD NEW PRODUCT</h5>
                         <p class="card-text">You are successfully logged in!</p>
                         <p class="text-muted">
                             <strong>Username:</strong> <?php echo htmlspecialchars($_SESSION['username']); ?><br>

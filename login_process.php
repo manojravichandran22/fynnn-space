@@ -25,8 +25,8 @@ try {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
 
-            // Redirect to dashboard
-            header('Location: dashboard.php');
+            // Redirect to products-add page
+            header('Location: products-add.php');
             exit();
         } else {
             $_SESSION['error'] = 'Invalid username or password!';
