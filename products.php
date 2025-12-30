@@ -44,27 +44,37 @@ include('header.php'); ?>
 
 <div class="cont-out produlidt">
 <div class="container-fluid position-relative">
-<div class="row">
+    <div class="row">
 
+      <?php
+      require_once 'db_config.php';
+      try {
+          $stmt = $db->query("SELECT * FROM products ORDER BY id ASC");
+          $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+          if (count($products) > 0) {
+              foreach ($products as $row) {
+                  $imagePath = !empty($row['cat_image']) ? 'images/products/' . htmlspecialchars($row['cat_image']) : 'images/default-product.jpg';
+                  ?>
+                  <div class="col-md-3 smmob">
+                    <div class="projecthomeout">
+                      <a href="product-details.php?id=<?php echo $row['id']; ?>">
+                      <div class="projimg"><img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($row['cate_title']); ?>" style="width:100%; height:250px; object-fit:cover;"></div>
+                      <h6><?php echo htmlspecialchars($row['cate_title']); ?></h6>
+                      </a>
+                    </div>
+                  </div>
+                  <?php
+              }
+          } else {
+              echo '<div class="col-12 text-center"><p>No products available at the moment.</p></div>';
+          }
+      } catch (PDOException $e) {
+          echo '<p class="text-danger">Error loading products.</p>';
+      }
+      ?>
 
-      <div class="col-md-3 smmob">
-        <div class="projecthomeout">
-          <a href="polygranite-sheets.php">
-          <div class="projimg"><img src="images/products/1.jpg"></div>
-          <h6>Polygranite Sheets</h6>
-          </a>
-        </div>
-      </div>
-
-
-
-
-
-
-
-
-</div>
+    </div>
 
 
 

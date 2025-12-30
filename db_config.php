@@ -11,22 +11,41 @@ try {
     $db = new PDO('sqlite:' . $db_path);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Drop old users table if exists (fresh start)
-    $db->exec("DROP TABLE IF EXISTS users");
-
-    // Create new users table (without AUTOINCREMENT - no sqlite_sequence)
-    $db->exec("CREATE TABLE users (
-        id INTEGER PRIMARY KEY,
+    // Create users table if not exists (only runs once)
+    $db->exec("CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )");
 
-    // Insert admin user with hashed password
-    $hashed_password = password_hash('admin123', PASSWORD_DEFAULT);
+    // Check if admin user exists, if not create one
+    $stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
+    $stmt->execute(['admin']);
+    if ($stmt->fetchColumn() == 0) {
+        $hashed_password = password_hash('admin123', PASSWORD_DEFAULT);
+        $db->prepare("INSERT INTO users (username, password) VALUES (?, ?)")
+            ->execute(['admin', $hashed_password]);
+    }
 
-    $db->prepare("INSERT INTO users (username, password) VALUES (?, ?)")
-        ->execute(['admin', $hashed_password]);
+    // Create products table
+    $db->exec("CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cate_title TEXT NOT NULL,
+        cat_image TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    // Create product_subcategories table
+    $db->exec("CREATE TABLE IF NOT EXISTS product_subcategories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        product_id INTEGER NOT NULL,
+        subcat_title TEXT NOT NULL,
+        subcat_image TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    )");
+
 } catch (Exception $e) {
     die("Database connection error: " . $e->getMessage());
 }
