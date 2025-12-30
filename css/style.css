@@ -2392,3 +2392,24 @@ h6 {letter-spacing: 0.6px;}
 }
 
 }
+
+.login-section {
+  min-height: 100vh;
+  background: transparent !important;
+  display: flex;
+  align-items: center;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.login-card h3 {
+  font-weight: 600;
+}
+
+.input-group-text {
+  background-color: #f1f1f1;
+}
