@@ -1,0 +1,88 @@
+<!--headerout-->
+<div class="headerbg">
+
+<div class="topheader_outer">
+      <div class="container-fluid">
+
+    <nav
+      class="navbar navbar-expand-lg navbar-light"
+      aria-label="Main navigation"
+    >
+    <a class="navbar-brand" href="index.php"><img src="images/logo.jpg" title=" Logo" alt='Logo"' /></a>
+
+
+<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"  aria-label=" Menu"
+          title=" Menu">
+          <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="navbar-collapse collapse ms-auto"
+          id="navbarsExampleDefault">
+        
+<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+          
+          
+          
+        <li class="nav-item ">
+          <a class="nav-link <?php if(isset($index)) { echo ' active '; } ?> "  href="index.php"><span>Home</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?php if(isset($about)) { echo ' active '; } ?>  " href="about-us.php"><span>About Us</span></a>
+        </li>
+			
+         <li class="nav-item">
+          <a class="nav-link <?php if(isset($services)) { echo ' active '; } ?>  "   href="services.php"><span>Services</span></a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link k <?php if(isset($projects)) { echo ' active '; } ?>  "   href="projects.php"><span>Projects</span></a>
+        </li>
+        
+          <li class="nav-item">
+          <a class="nav-link k <?php if(isset($products)) { echo ' active '; } ?>  "   href="products.php"><span>Products</span></a>
+        </li>
+       
+        <li class="nav-item">
+          <a class="nav-link <?php if(isset($contact)) { echo ' active '; } ?>  " href="contact-us.php"><span>Contact Us</span></a>
+        </li>
+          
+          
+
+          </ul>
+          
+
+          <div class="last_list">
+            <div class="reqcallout">
+
+<div class="reqcall"><div class="topicons"><img src="images/top-mob.png" /></div>
+<a  href="tel:+919514991999">+91 9514991999</a></div>
+<div class="reqcall"><div class="topicons2 "><a href="mailto:info@fynn.com"><img src="images/top-email.png" /></a></div>
+<?php /*?><a style="display:none" href="mailto:info@fynn.com">info@fynn.com</a><?php */?></div>
+
+
+</div>
+
+                    
+                    </div>
+
+
+                
+          
+          
+          
+          
+        </div>
+        
+        
+        
+        
+        
+        
+    </nav>
+
+      </div>
+
+</div>
