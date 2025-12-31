@@ -28,15 +28,35 @@ session_start();
 
         .login-section {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+            background: url('images/banner2.jpg') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             align-items: center;
+            position: relative;
+        }
+
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .login-section .container {
+            position: relative;
+            z-index: 2;
         }
 
         .login-card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         .login-card h3 {
@@ -46,6 +66,16 @@ session_start();
         .input-group-text {
             background-color: #f1f1f1;
             cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #fc9401;
+            border-color: #fc9401;
+        }
+
+        .btn-primary:hover {
+            background-color: #e58601;
+            border-color: #e58601;
         }
     </style>
 </head>
