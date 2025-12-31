@@ -109,27 +109,43 @@ include('header.php'); ?>
 <!-- Subcategories / Patterns Section -->
 <section class="projectsection">
     <div class="container-fluid position-relative">
-        <div class="headingpar proejcthead" >
-            <h3>Available Patterns / Designs</h3>
-        </div>
+        
+        <?php
+        // Group subcategories by 'group_name'
+        $grouped_subs = [];
+        if (count($subcategories) > 0) {
+            foreach ($subcategories as $sub) {
+                $group = !empty($sub['group_name']) ? $sub['group_name'] : 'Designs'; // Default header if empty
+                $grouped_subs[$group][] = $sub;
+            }
+        }
+        ?>
 
-        <?php if (count($subcategories) > 0): ?>
-            <div class="row">
-                <?php foreach ($subcategories as $sub): ?>
-                    <div class="col-md-3 smmob">
-                        <div class="projecthomeout">
-                            <div class="projimg">
-                                <?php if (!empty($sub['subcat_image'])): ?>
-                                    <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:250px; object-fit:cover;">
-                                <?php else: ?>
-                                    <img src="images/default.jpg" style="width:100%; height:250px; object-fit:cover;">
-                                <?php endif; ?>
+        <?php if (count($grouped_subs) > 0): ?>
+            <?php foreach ($grouped_subs as $group_title => $items): ?>
+                
+                <div class="headingpar proejcthead" >
+                    <h3><?php echo htmlspecialchars($group_title); ?></h3>
+                </div>
+
+                <div class="row mb-5">
+                    <?php foreach ($items as $sub): ?>
+                        <div class="col-md-3 smmob">
+                            <div class="projecthomeout">
+                                <div class="projimg">
+                                    <?php if (!empty($sub['subcat_image'])): ?>
+                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:250px; object-fit:cover;">
+                                    <?php else: ?>
+                                        <img src="images/default.jpg" style="width:100%; height:250px; object-fit:cover;">
+                                    <?php endif; ?>
+                                </div>
+                                <h6><?php echo htmlspecialchars($sub['subcat_title']); ?></h6>
                             </div>
-                            <h6><?php echo htmlspecialchars($sub['subcat_title']); ?></h6>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+
         <?php else: ?>
             <div class="text-center py-5">
                 <h4>No specific designs added for this category yet.</h4>

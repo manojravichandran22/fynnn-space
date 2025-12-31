@@ -49,7 +49,7 @@ include('header.php'); ?>
       <?php
       require_once 'db_config.php';
       try {
-          $stmt = $db->query("SELECT * FROM products ORDER BY id ASC");
+          $stmt = $db->query("SELECT * FROM products ORDER BY id DESC");
           $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
           if (count($products) > 0) {
