@@ -59,7 +59,7 @@ include('header.php'); ?>
                   <div class="col-md-3 smmob">
                     <div class="projecthomeout">
                       <a href="product-details.php?id=<?php echo $row['id']; ?>">
-                      <div class="projimg"><img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($row['cate_title']); ?>" style="width:100%; height:250px; object-fit:cover;"></div>
+                      <div class="projimg"><img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($row['cate_title']); ?>" style="width:100%; height:400px; object-fit:cover;"></div>
                       <h6><?php echo htmlspecialchars($row['cate_title']); ?></h6>
                       </a>
                     </div>

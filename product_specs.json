@@ -53,6 +53,11 @@
                     "label": "Per Sheet Weight:",
                     "value": "17.5 Kg (3 mm) | 6 Kg (1.2 mm)"
                 }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/pgsheets.png"
+                }
             ]
         },
         "2": {
@@ -103,6 +108,11 @@
                 {
                     "label": "Coverage Area:",
                     "value": "32 Sq. Ft"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/stonepanel.png"
                 }
             ]
         },
@@ -158,6 +168,11 @@
                 {
                     "label": "Coverage Area:",
                     "value": "5.2 Sq. Ft"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/wpc.png"
                 }
             ]
         },
@@ -218,6 +233,11 @@
                     "label": "Coverage Area:",
                     "value": "6.84 Sq. Ft"
                 }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/wpce.png"
+                }
             ]
         },
         "5": {
@@ -272,6 +292,11 @@
                 {
                     "label": "Coverage Area:",
                     "value": "2.36 Sq. Ft"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/spc.png"
                 }
             ]
         },
@@ -332,6 +357,11 @@
                     "label": "Per Box Piece:",
                     "value": "12 Piece"
                 }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/softfit.png"
+                }
             ]
         },
         "7": {
@@ -390,6 +420,11 @@
                 {
                     "label": "Per Box Piece:",
                     "value": "12 Piece"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/softfitfl.png"
                 }
             ]
         },
@@ -450,6 +485,11 @@
                     "label": "Per Box Piece:",
                     "value": "12 Piece"
                 }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/softfitex.png"
+                }
             ]
         },
         "9": {
@@ -496,6 +536,11 @@
                 {
                     "label": "Patterns:",
                     "value": "8+"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/pustone.png"
                 }
             ]
         },
@@ -551,6 +596,11 @@
                 {
                     "label": "Coverage Area:",
                     "value": "32 Sq. Ft"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/bamboo.png"
                 }
             ]
         },
@@ -661,6 +711,11 @@
                 {
                     "label": "Coverage Area:",
                     "value": "20.22 Sq. Ft"
+                }
+            ],
+            "image": [
+                {
+                    "image": "images/products/advimages/softcoat.png"
                 }
             ]
         }

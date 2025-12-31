@@ -458,6 +458,8 @@ pointer-events: none;
   float: left;
   width: 100%;
   margin-top: 25px;
+   border: 20px solid #ffffff;
+  padding: 0;
 }
 .projimg
 {  float: left;
@@ -481,11 +483,20 @@ pointer-events: none;
 {
    float: left;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 15px;
   color: #ffffff;
   font-size: 16px;
   text-align: center;
 
+}
+.smmob h6
+{
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
 }
 .projectsection
 {
