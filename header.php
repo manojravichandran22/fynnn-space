@@ -54,7 +54,7 @@
           </ul>
           
 
-          <div class="last_list">
+          <div class="last_list" style="display: flex; align-items: center;">
             <div class="reqcallout">
 
 <div class="reqcall"><div class="topicons"><img src="images/top-mob.png" /></div>
@@ -65,6 +65,9 @@
 
 </div>
 
+             <?php if (!isset($_SESSION['user_id'])): ?>
+                <a href="login.php" class="appointment_now" style="margin-left: 15px; padding: 7px 20px;">Login</a>
+             <?php endif; ?>
                     
                     </div>
 
