@@ -183,9 +183,9 @@ include('header.php'); ?>
                             <div class="projecthomeout">
                                 <div class="projimg">
                                     <?php if (!empty($sub['subcat_image'])): ?>
-                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:250px; object-fit:cover;">
+                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" >
                                     <?php else: ?>
-                                        <img src="images/default.jpg" style="width:100%; height:250px; object-fit:cover;">
+                                        <img src="images/default.jpg" style="width:100%; aspect-ratio: 1/1; object-fit:cover;">
                                     <?php endif; ?>
                                 </div>
                                 <h6><?php echo htmlspecialchars($sub['subcat_title']); ?></h6>
