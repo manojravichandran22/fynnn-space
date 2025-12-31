@@ -679,5 +679,28 @@ function previewSubImage(event) {
 }
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Auto-dismiss alerts after 3 seconds
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            let bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 3000);
+
+    // 2. Clear URL parameters (msg, error) without refreshing
+    if (window.history.replaceState) {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('msg') || url.searchParams.has('error')) {
+            url.searchParams.delete('msg');
+            url.searchParams.delete('error');
+            window.history.replaceState({}, document.title, url.pathname + url.search);
+        }
+    }
+});
+</script>
+
 </body>
 </html>
