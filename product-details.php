@@ -123,7 +123,7 @@ include('header.php'); ?>
                     <div class="video-column col-lg-4 col-md-12 col-sm-12">
                         <div class="abtus-img">
                              <?php if (!empty($product['cat_image'])): ?>
-                                <img src="images/products/<?php echo htmlspecialchars($product['cat_image']); ?>" style="width:100%; border-radius:10px;" />
+                                <img src="images/products/<?php echo htmlspecialchars($product['cat_image']); ?>" style="width:100%; height:400px; object-fit:cover;" />
                             <?php endif; ?>
                         </div>
                     </div>
@@ -131,6 +131,28 @@ include('header.php'); ?>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+<!-- Advantages & Features Section -->
+<section class="advantages-section" style="padding: 40px 0; ">
+    <div class="auto-container">
+        <div class="headingparr" style="margin-bottom: 30px; text-align: center !important;">
+            <h3 style="text-align: center !important;">Advantages & Features</h3>
+        </div>
+        
+        <?php if (!empty($specs['image'])): ?>
+            <div class="row clearfix">
+                <?php foreach ($specs['image'] as $img): ?>
+                    <?php if (!empty($img['image'])): ?>
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 30px; text-align: center;">
+                            <img src="<?php echo htmlspecialchars($img['image']); ?>" alt="Advantage" style="width: 1000px; max-width: 100%; height: auto; border-radius: 10px;">
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p>Content coming soon...</p>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -183,13 +205,13 @@ include('header.php'); ?>
                             <div class="projecthomeout">
                                 <div class="projimg">
                                     <?php if (!empty($sub['subcat_image'])): ?>
-                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:250px; object-fit:cover;">
+                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:300px; object-fit:cover;" >
                                     <?php else: ?>
-                                        <img src="images/default.jpg" style="width:100%; height:250px; object-fit:cover;">
+                                        <img src="images/default.jpg" style="width:100%; height:300px; object-fit:cover;">
                                     <?php endif; ?>
                                 </div>
-                                <h6><?php echo htmlspecialchars($sub['subcat_title']); ?></h6>
                             </div>
+                            <h6><?php echo htmlspecialchars($sub['subcat_title']); ?></h6>
                         </div>
                     <?php endforeach; ?>
                 </div>
