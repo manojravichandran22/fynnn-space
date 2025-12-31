@@ -18,13 +18,13 @@ $error = '';
 if (isset($_GET['fetch_id'])) {
     header('Content-Type: application/json');
     $fetch_id = $_GET['fetch_id'];
-    
+
     try {
         // Fetch Category
         $stmt = $db->prepare("SELECT * FROM products WHERE id = ?");
         $stmt->execute([$fetch_id]);
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         // Fetch Subcategories
         $stmt_sub = $db->prepare("SELECT * FROM product_subcategories WHERE product_id = ? ORDER BY id DESC");
         $stmt_sub->execute([$fetch_id]);
@@ -34,7 +34,7 @@ if (isset($_GET['fetch_id'])) {
         $stmt_grps = $db->prepare("SELECT DISTINCT group_name FROM product_subcategories WHERE product_id = ? AND group_name IS NOT NULL AND group_name != '' ORDER BY group_name ASC");
         $stmt_grps->execute([$fetch_id]);
         $unique_groups = $stmt_grps->fetchAll(PDO::FETCH_COLUMN);
-        
+
         echo json_encode(['status' => 'success', 'product' => $product, 'subcategories' => $subcategories, 'unique_groups' => $unique_groups]);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
@@ -52,7 +52,7 @@ if (isset($_GET['delete_id'])) {
         $stmt_cat = $db->prepare("SELECT cat_image FROM products WHERE id = ?");
         $stmt_cat->execute([$delete_id]);
         $cat_row = $stmt_cat->fetch(PDO::FETCH_ASSOC);
-        
+
         $stmt_sub = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE product_id = ?");
         $stmt_sub->execute([$delete_id]);
         $sub_images = $stmt_sub->fetchAll(PDO::FETCH_COLUMN);
@@ -101,7 +101,7 @@ if (isset($_GET['delete_sub_id'])) {
             if (file_exists($file_path)) unlink($file_path);
         }
 
-        header("Location: products-add.php?msg=Subcategory deleted"); 
+        header("Location: products-add.php?msg=Subcategory deleted");
         exit();
     } catch (PDOException $e) {
         $error = "Error deleting subcategory: " . $e->getMessage();
@@ -111,11 +111,13 @@ if (isset($_GET['delete_sub_id'])) {
 // Save New Category (and optional Subcategory)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add_product') {
     $cate_title = $_POST['cate_title'];
-    
+
     // Upload Category Image
     $cat_image = '';
     $target_dir = "images/products/";
-    if (!file_exists($target_dir)) { mkdir($target_dir, 0777, true); }
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
 
     if (!empty($_FILES["cat_image"]["name"])) {
         $cat_image = time() . "_cat_" . basename($_FILES["cat_image"]["name"]);
@@ -124,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 
     try {
         $db->beginTransaction();
-        
+
         // Insert Category
         $stmt = $db->prepare("INSERT INTO products (cate_title, cat_image) VALUES (?, ?)");
         $stmt->execute([$cate_title, $cat_image]);
@@ -134,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         if (!empty($_POST['subcat_title']) && !empty($_FILES['subcat_image']['name'])) {
             $subcat_title = $_POST['subcat_title'];
             $group_name = !empty($_POST['subcat_group']) ? $_POST['subcat_group'] : 'General';
-            
+
             $subcat_image = time() . "_sub_" . basename($_FILES["subcat_image"]["name"]);
             move_uploaded_file($_FILES["subcat_image"]["tmp_name"], $target_dir . $subcat_image);
 
@@ -145,7 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $db->commit();
         header("Location: products-add.php?msg=Product added successfully");
         exit();
-
     } catch (Exception $e) {
         $db->rollBack();
         $error = "Error: " . $e->getMessage();
@@ -156,10 +157,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'edit_product') {
     $product_id = $_POST['product_id'];
     $cate_title = $_POST['cate_title'];
-    
+
     $cat_image = $_POST['existing_cat_image'];
     $target_dir = "images/products/";
-    
+
     if (!empty($_FILES["cat_image"]["name"])) {
         $cat_image = time() . "_cat_" . basename($_FILES["cat_image"]["name"]);
         move_uploaded_file($_FILES["cat_image"]["tmp_name"], $target_dir . $cat_image);
@@ -168,19 +169,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     try {
         $stmt = $db->prepare("UPDATE products SET cate_title = ?, cat_image = ? WHERE id = ?");
         $stmt->execute([$cate_title, $cat_image, $product_id]);
-        
+
         // Also handle adding a NEW subcategory from the Edit modal if fields are present
         if (!empty($_POST['new_subcat_title']) && !empty($_FILES['new_subcat_image']['name'])) {
-             $subcat_title = $_POST['new_subcat_title'];
-             $group_name = !empty($_POST['new_subcat_group']) ? $_POST['new_subcat_group'] : 'General';
-             
-             $subcat_image = time() . "_sub_" . basename($_FILES["new_subcat_image"]["name"]);
-             move_uploaded_file($_FILES["new_subcat_image"]["tmp_name"], $target_dir . $subcat_image);
+            $subcat_title = $_POST['new_subcat_title'];
+            $group_name = !empty($_POST['new_subcat_group']) ? $_POST['new_subcat_group'] : 'General';
 
-             $stmt_sub = $db->prepare("INSERT INTO product_subcategories (product_id, subcat_title, subcat_image, group_name) VALUES (?, ?, ?, ?)");
-             $stmt_sub->execute([$product_id, $subcat_title, $subcat_image, $group_name]);
+            $subcat_image = time() . "_sub_" . basename($_FILES["new_subcat_image"]["name"]);
+            move_uploaded_file($_FILES["new_subcat_image"]["tmp_name"], $target_dir . $subcat_image);
+
+            $stmt_sub = $db->prepare("INSERT INTO product_subcategories (product_id, subcat_title, subcat_image, group_name) VALUES (?, ?, ?, ?)");
+            $stmt_sub->execute([$product_id, $subcat_title, $subcat_image, $group_name]);
         }
-        
+
         header("Location: products-add.php?msg=Category updated successfully");
         exit();
     } catch (Exception $e) {
@@ -207,6 +208,7 @@ if (isset($_GET['msg'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Manage Products</title>
@@ -217,38 +219,84 @@ if (isset($_GET['msg'])) {
     <?php include('website-link.php'); ?>
     <style>
         .dashboard-header {
-            background:url('images/banner1.jpg') no-repeat center center;
+            background: url('images/banner1.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
             padding: 50px 0;
             color: white;
         }
+
         .dashboard-header::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.6);
             z-index: 1;
         }
+
         .dashboard-header .container-fluid {
             position: relative;
             z-index: 2;
         }
-        .img-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .modal-header { background: #f8f9fa; }
-        .subcat-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #eee; transition: background 0.2s;}
-        .subcat-item:hover { background: #f9f9f9; }
-        .subcat-item:last-child { border-bottom: none; }
-        .subcat-img { width: 45px; height: 45px; object-fit: cover; border-radius: 5px; margin-right: 12px; }
-        .group-badge { font-size: 0.75em; background: #f0f2f5; padding: 3px 8px; border-radius: 12px; margin-left:8px; color:#666; font-weight: 500;}
-        
+
+        .img-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background: #f8f9fa;
+        }
+
+        .subcat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .subcat-item:hover {
+            background: #f9f9f9;
+        }
+
+        .subcat-item:last-child {
+            border-bottom: none;
+        }
+
+        .subcat-img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 12px;
+        }
+
+        .group-badge {
+            font-size: 0.75em;
+            background: #f0f2f5;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            color: #666;
+            font-weight: 500;
+        }
+
         /* Premium Table Styling */
         .table-card {
             border: none;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08) !important;
             overflow: hidden;
         }
+
         .table thead th {
             background-color: #fcfcfc;
             text-transform: uppercase;
@@ -259,37 +307,52 @@ if (isset($_GET['msg'])) {
             color: #555;
             font-weight: 600;
         }
+
         .table tbody td {
             padding: 16px;
             border-bottom: 1px solid #f4f4f4;
         }
+
         .table tbody tr:last-child td {
             border-bottom: none;
         }
-        
+
         /* Theme Color Overrides */
-        .btn-primary, .bg-primary, .dropdown-item.active, .dropdown-item:active {
+        .btn-primary,
+        .bg-primary,
+        .dropdown-item.active,
+        .dropdown-item:active {
             background-color: #fc9401 !important;
             border-color: #fc9401 !important;
         }
-        .btn-outline-primary, .btn-outline-info, .text-primary {
-            color: #fc9401 !important;
+
+        .btn-outline-primary,
+        .btn-outline-info,
+        .text-primary {
+            color: #ffb84d !important;
         }
-        .btn-outline-primary, .btn-outline-info {
+
+        .btn-outline-primary,
+        .btn-outline-info {
             border-color: #fc9401 !important;
         }
-        .btn-outline-primary:hover, .btn-outline-info:hover {
+
+        .btn-outline-primary:hover,
+        .btn-outline-info:hover {
             background-color: #fc9401 !important;
             color: #fff !important;
         }
+
         .spinner-border.text-primary {
             color: #fc9401 !important;
         }
+
         .modal-header.bg-primary .modal-title {
             color: white !important;
         }
     </style>
 </head>
+
 <body>
     <?php include('header.php'); ?>
 
@@ -319,7 +382,7 @@ if (isset($_GET['msg'])) {
         <!-- Toolbar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                 <!-- Optional Filter could go here -->
+                <!-- Optional Filter could go here -->
             </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
                 <i class="bi bi-plus-lg"></i> Add Product
@@ -360,7 +423,9 @@ if (isset($_GET['msg'])) {
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <tr><td colspan="4" class="text-center py-4">No products found.</td></tr>
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">No products found.</td>
+                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -374,116 +439,116 @@ if (isset($_GET['msg'])) {
 
     <!-- ADD MODAL -->
     <!-- ADD PRODUCT MODAL -->
-<div class="modal fade" id="addModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 shadow-lg">
+    <div class="modal fade" id="addModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
 
-            <!-- HEADER -->
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="bi bi-box-seam me-2"></i> Add New Product
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- FORM -->
-            <form action="products-add.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="add_product">
-
-                <div class="modal-body">
-
-                    <!-- CATEGORY CARD -->
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-body">
-                            <h6 class="fw-bold text-primary mb-3">
-                                <i class="bi bi-folder me-1"></i> Product Category
-                            </h6>
-
-                            <div class="row align-items-end">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Category Title</label>
-                                    <input type="text" 
-                                           name="cate_title" 
-                                           class="form-control"
-                                           placeholder="e.g. Wall Panels"
-                                           required>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Category Image</label>
-                                    <input type="file"
-                                           name="cat_image"
-                                           class="form-control"
-                                           accept="image/*"
-                                           onchange="previewCatImage(event)">
-                                    <img id="catPreview" 
-                                         class="mt-2 rounded d-none border"
-                                         height="70">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SUBCATEGORY CARD -->
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body">
-                            <h6 class="fw-bold text-primary mb-3">
-                                <i class="bi bi-layers me-1"></i> Initial Subcategory (Optional)
-                            </h6>
-
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Group Name</label>
-                                    <input type="text"
-                                           name="subcat_group"
-                                           class="form-control"
-                                           placeholder="e.g. 3MM Pattern"
-                                           list="group_names_list">
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Subcategory Title</label>
-                                    <input type="text"
-                                           name="subcat_title"
-                                           class="form-control"
-                                           placeholder="e.g. Marble Design">
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Subcategory Image</label>
-                                    <input type="file"
-                                           name="subcat_image"
-                                           class="form-control"
-                                           accept="image/*"
-                                           onchange="previewSubImage(event)">
-                                    <img id="subPreview"
-                                         class="mt-2 rounded d-none border"
-                                         height="60">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <!-- HEADER -->
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-box-seam me-2"></i> Add New Product
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
 
-                <!-- FOOTER -->
-                <div class="modal-footer bg-light">
-                    <button type="button"
+                <!-- FORM -->
+                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="add_product">
+
+                    <div class="modal-body">
+
+                        <!-- CATEGORY CARD -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-folder me-1"></i> Product Category
+                                </h6>
+
+                                <div class="row align-items-end">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Category Title</label>
+                                        <input type="text"
+                                            name="cate_title"
+                                            class="form-control"
+                                            placeholder="e.g. Wall Panels"
+                                            required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Category Image</label>
+                                        <input type="file"
+                                            name="cat_image"
+                                            class="form-control"
+                                            accept="image/*"
+                                            onchange="previewCatImage(event)">
+                                        <img id="catPreview"
+                                            class="mt-2 rounded d-none border"
+                                            height="70">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBCATEGORY CARD -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-layers me-1"></i> Initial Subcategory (Optional)
+                                </h6>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Group Name</label>
+                                        <input type="text"
+                                            name="subcat_group"
+                                            class="form-control"
+                                            placeholder="e.g. 3MM Pattern"
+                                            list="group_names_list">
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Subcategory Title</label>
+                                        <input type="text"
+                                            name="subcat_title"
+                                            class="form-control"
+                                            placeholder="e.g. Marble Design">
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Subcategory Image</label>
+                                        <input type="file"
+                                            name="subcat_image"
+                                            class="form-control"
+                                            accept="image/*"
+                                            onchange="previewSubImage(event)">
+                                        <img id="subPreview"
+                                            class="mt-2 rounded d-none border"
+                                            height="60">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="modal-footer bg-light">
+                        <button type="button"
                             class="btn btn-outline-secondary"
                             data-bs-dismiss="modal">
-                        Cancel
-                    </button>
+                            Cancel
+                        </button>
 
-                    <button type="submit"
+                        <button type="submit"
                             class="btn btn-primary px-4">
-                        <i class="bi bi-check-circle me-1"></i> Save Product
-                    </button>
-                </div>
-            </form>
+                            <i class="bi bi-check-circle me-1"></i> Save Product
+                        </button>
+                    </div>
+                </form>
 
+            </div>
         </div>
     </div>
-</div>
 
 
     <!-- VIEW MODAL -->
@@ -507,7 +572,9 @@ if (isset($_GET['msg'])) {
                     <h5 class="border-bottom pb-2">Subcategories / Designs</h5>
                     <div id="viewSubcatList">
                         <!-- Ajax Content -->
-                        <div class="text-center py-3"><div class="spinner-border text-primary"></div></div>
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -525,7 +592,7 @@ if (isset($_GET['msg'])) {
                     <input type="hidden" name="action" value="edit_product">
                     <input type="hidden" name="product_id" id="editProductId">
                     <input type="hidden" name="existing_cat_image" id="editExistingImage">
-                    
+
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Product</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -543,7 +610,7 @@ if (isset($_GET['msg'])) {
                             <input type="file" name="cat_image" class="form-control" accept="image/*">
                             <small class="text-muted">Leave empty to keep existing image</small>
                         </div>
-                        
+
                         <hr>
                         <h6 class="text-primary">Add New Subcategory</h6>
                         <div class="row">
@@ -575,7 +642,7 @@ if (isset($_GET['msg'])) {
     <datalist id="group_names_list">
         <?php foreach ($group_names as $grp): ?>
             <option value="<?php echo htmlspecialchars($grp); ?>">
-        <?php endforeach; ?>
+            <?php endforeach; ?>
     </datalist>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -585,35 +652,35 @@ if (isset($_GET['msg'])) {
             // Initialize Tooltips
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-            
+
             // Handle View Click
             $('.view-btn').click(function() {
                 var id = $(this).data('id');
                 $('#viewModal').modal('show');
-                
+
                 // Clear previous data
                 $('#viewCatTitle').text('Loading...');
                 $('#viewCatImage').attr('src', '');
                 $('#viewSubcatList').html('<div class="text-center py-3"><div class="spinner-border text-primary"></div></div>');
 
                 $.get('products-add.php?fetch_id=' + id, function(response) {
-                    if(response.status === 'success') {
+                    if (response.status === 'success') {
                         var prod = response.product;
                         var subs = response.subcategories;
 
                         $('#viewCatTitle').text(prod.cate_title);
-                        if(prod.cat_image) {
+                        if (prod.cat_image) {
                             $('#viewCatImage').attr('src', 'images/products/' + prod.cat_image).show();
                         } else {
-                             $('#viewCatImage').hide();
+                            $('#viewCatImage').hide();
                         }
 
                         var subHtml = '';
-                        if(subs.length > 0) {
+                        if (subs.length > 0) {
                             subs.forEach(function(s) {
                                 var img = s.subcat_image ? 'images/products/' + s.subcat_image : 'images/placeholder.png';
                                 var grp = s.group_name ? s.group_name : 'General';
-                                
+
                                 subHtml += '<div class="subcat-item">';
                                 subHtml += '<div class="d-flex align-items-center">';
                                 subHtml += '<img src="' + img + '" class="subcat-img">';
@@ -636,15 +703,15 @@ if (isset($_GET['msg'])) {
             $('.edit-btn').click(function() {
                 var id = $(this).data('id');
                 $('#editModal').modal('show');
-                
+
                 $.get('products-add.php?fetch_id=' + id, function(response) {
-                    if(response.status === 'success') {
+                    if (response.status === 'success') {
                         var prod = response.product;
                         $('#editProductId').val(prod.id);
                         $('#editCatTitle').val(prod.cate_title);
                         $('#editExistingImage').val(prod.cat_image);
-                        
-                        if(prod.cat_image) {
+
+                        if (prod.cat_image) {
                             $('#editImagePreview').attr('src', 'images/products/' + prod.cat_image).show();
                         } else {
                             $('#editImagePreview').hide();
@@ -654,9 +721,9 @@ if (isset($_GET['msg'])) {
                         var groups = response.unique_groups;
                         var dl = $('#edit_dynamic_list');
                         dl.empty();
-                        if(groups && groups.length > 0) {
+                        if (groups && groups.length > 0) {
                             groups.forEach(function(g) {
-                                dl.append('<option value="'+g+'">');
+                                dl.append('<option value="' + g + '">');
                             });
                         }
                     }
@@ -666,41 +733,42 @@ if (isset($_GET['msg'])) {
         });
     </script>
     <script>
-function previewCatImage(event) {
-    const img = document.getElementById('catPreview');
-    img.src = URL.createObjectURL(event.target.files[0]);
-    img.classList.remove('d-none');
-}
-
-function previewSubImage(event) {
-    const img = document.getElementById('subPreview');
-    img.src = URL.createObjectURL(event.target.files[0]);
-    img.classList.remove('d-none');
-}
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Auto-dismiss alerts after 3 seconds
-    setTimeout(function() {
-        let alerts = document.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            let bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        });
-    }, 3000);
-
-    // 2. Clear URL parameters (msg, error) without refreshing
-    if (window.history.replaceState) {
-        const url = new URL(window.location.href);
-        if (url.searchParams.has('msg') || url.searchParams.has('error')) {
-            url.searchParams.delete('msg');
-            url.searchParams.delete('error');
-            window.history.replaceState({}, document.title, url.pathname + url.search);
+        function previewCatImage(event) {
+            const img = document.getElementById('catPreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.classList.remove('d-none');
         }
-    }
-});
-</script>
+
+        function previewSubImage(event) {
+            const img = document.getElementById('subPreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.classList.remove('d-none');
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Auto-dismiss alerts after 3 seconds
+            setTimeout(function() {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    let bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 3000);
+
+            // 2. Clear URL parameters (msg, error) without refreshing
+            if (window.history.replaceState) {
+                const url = new URL(window.location.href);
+                if (url.searchParams.has('msg') || url.searchParams.has('error')) {
+                    url.searchParams.delete('msg');
+                    url.searchParams.delete('error');
+                    window.history.replaceState({}, document.title, url.pathname + url.search);
+                }
+            }
+        });
+    </script>
 
 </body>
+
 </html>

@@ -4,7 +4,7 @@
             "description": "",
             "attributes": []
         },
-        "10": {
+        "1": {
             "description": "Business Bench Polygranite Sheets are eventually utilized to decorate interior walls in both commercial and residential buildings. These sheets are ideal for use in restaurants, theatres, offices, hotels, clubs, hospitals, and hallways. With numerous advantages, Business Bench brings Polygranite Sheets to the market.",
             "attributes": [
                 {
@@ -52,6 +52,615 @@
                 {
                     "label": "Per Sheet Weight:",
                     "value": "17.5 Kg (3 mm) | 6 Kg (1.2 mm)"
+                }
+            ]
+        },
+        "2": {
+            "description": "Stone Panels are durable cladding solutions crafted from natural or composite stone, offering a premium aesthetic for both interior and exterior surfaces. Known for their weather resistance, fire safety, and long lifespan, they enhance structural beauty while requiring minimal maintenance, making them ideal for feature walls, and outdoor landscapes.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "PVC & Calcium Carbonate, Mimicking Natural Granite Or Marble, With Visual & Physical Texture."
+                },
+                {
+                    "label": "Application",
+                    "value": "Suitable for both commercial & residential interior wall cladding."
+                },
+                {
+                    "label": "Function",
+                    "value": "Enhances aesthetics, provides insulation, durability & weather resistance."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Long-lasting, Low-maintenance, Fire-Resistant, Adds Premium Look."
+                },
+                {
+                    "label": "Life time",
+                    "value": "Can last over 30 years with proper installation & care."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Fixed with Adhesives & Aluminum Accessories."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "4 Feet"
+                },
+                {
+                    "label": "Height:",
+                    "value": "8 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "3 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "10 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "32 Sq. Ft"
+                }
+            ]
+        },
+        "3": {
+            "description": "WPC (Wood-Plastic Composite) interior panels are an eco-friendly and versatile wall cladding solution. Known for their durability, aesthetics, and low maintenance, WPC panels are widely used in modern interior design for both residential and commercial spaces.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Wood fibre, Plastic, Additives, Pigments, and UV stabilizers."
+                },
+                {
+                    "label": "Application",
+                    "value": "Interior wall cladding, ceiling panels, partitions."
+                },
+                {
+                    "label": "Function",
+                    "value": "Moisture-resistant, durable, and decorative interior surface material."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Water-resistant, Durable, Low maintenance, Cost-effective & Termite-resistant."
+                },
+                {
+                    "label": "Life time",
+                    "value": "20 years according to proper installation & area of usage."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Easy to cut, screw, and nail. Requires standard tools and adhesive for mounting."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "6.6 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "9 Feet 6 Inch"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "24 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "5 Patterns"
+                },
+                {
+                    "label": "Per Box Piece:",
+                    "value": "14 Pieces"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "5.2 Sq. Ft"
+                }
+            ]
+        },
+        "4": {
+            "description": "WPC (Wood Plastic Composite) panels are decorative wall panels with a vertical fluted design that creates a visually striking effect, giving walls and facades a contemporary appearance.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Composed of wood-plastic composite (WPC), combining wood fibres and thermoplastics for enhanced durability and aesthetics."
+                },
+                {
+                    "label": "Application",
+                    "value": "Ideal for exterior cladding, decking, fencing, and landscaping; suitable for residential and commercial projects."
+                },
+                {
+                    "label": "Function",
+                    "value": "Provides weather resistance, insulation, and protection against UV rays, moisture, and pests."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Eco-friendly, available in various colours and finishes, and resistant to warping and fading."
+                },
+                {
+                    "label": "Life time",
+                    "value": "25–30 years with proper care and maintenance."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Installed using hidden fasteners or clips for a seamless appearance, with straightforward alignment and securing methods."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "L Corners (Available in our pattern colour)."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "8.7 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "9 Feet 6 Inch"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "26 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "4 Patterns"
+                },
+                {
+                    "label": "Per Box Panel:",
+                    "value": "5 Pieces"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "6.84 Sq. Ft"
+                }
+            ]
+        },
+        "5": {
+            "description": "SPC (Stone Plastic Composite) Flooring is revolutionizing the flooring industry with its robust construction and versatile applications. Designed with a rigid core made from natural limestone powder, PVC, and stabilizers, SPC flooring offers superior durability, stability, and waterproof performance.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Stone Powder, PVC Powder & IXPE Pad."
+                },
+                {
+                    "label": "Application",
+                    "value": "Flooring for both commercial and residential spaces."
+                },
+                {
+                    "label": "Function",
+                    "value": "100% waterproof, scratch & stain-resistant, soundproof, comfortable, and easy maintenance."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Affordable price, safe, beautiful, durable, easy installation & environmental protection."
+                },
+                {
+                    "label": "Life time",
+                    "value": "20 years with proper care."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Click-lock system (no glue or nails). Can be installed over existing flooring and requires expansion gaps for stability."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "Skirting line, reducer, stair nose & T-shape mould."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "7 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "4 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "6.5 mm (5 mm SPC core + 1.5 mm IXPE Pad)"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "6 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "2.36 Sq. Ft"
+                }
+            ]
+        },
+        "6": {
+            "description": "Soffit panels cover the underside of eaves and roof overhangs, combining aesthetic appeal with practical benefits to enhance building exteriors.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Typically made from PVC with embossed wood texture or wooden designs."
+                },
+                {
+                    "label": "Application",
+                    "value": "Ceilings of porches or patios, balconies; enhances aesthetics and shields structural supports from exposure."
+                },
+                {
+                    "label": "Function",
+                    "value": "Provides ventilation to attic spaces, protects rafters from moisture, and enhances curb appeal."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Low-maintenance, resistant to rot and insects, available in various styles and colours."
+                },
+                {
+                    "label": "Life time",
+                    "value": "Generally lasts 20–40 years, depending on material and environmental conditions."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Installed using aluminum channels along with a combination of accessories and fasteners."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "H-Channel, J-Channel, Inner Corner & Outer Corner."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "1 Feet"
+                },
+                {
+                    "label": "Height:",
+                    "value": "12 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "1 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "7 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "12 Sq. Ft"
+                },
+                {
+                    "label": "Per Box Piece:",
+                    "value": "12 Piece"
+                }
+            ]
+        },
+        "7": {
+            "description": "Soffit Fluted Panels are stylish, durable exterior cladding solutions designed for enhanced aesthetics and ventilation. Made from weather-resistant materials, they provide a modern fluted texture, ensuring a sleek finish while protecting structures from moisture, heat, and pests. Ideal for soffit applications in residential and commercial spaces.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "97% PVC Raw material"
+                },
+                {
+                    "label": "Application",
+                    "value": "Perfect for ceilings, balconies, porches, and transitional indoor, outdoor areas."
+                },
+                {
+                    "label": "Function",
+                    "value": "Best suited for modern homes, resorts, showrooms, and semi-open spaces."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "They add premium aesthetics, provide insulation, and require very low maintenance."
+                },
+                {
+                    "label": "Life time",
+                    "value": "15 Years"
+                },
+                {
+                    "label": "Installation",
+                    "value": "Easy to install using clips or screws on basic framing, ensuring a seamless finish."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "H-Channel, J-Channel, Inner Corner & Outer Corner."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "6 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "12 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "1 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "6 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "6 Sq. Ft"
+                },
+                {
+                    "label": "Per Box Piece:",
+                    "value": "12 Piece"
+                }
+            ]
+        },
+        "8": {
+            "description": "Manufactured from high-grade, weather-resistant materials, these panels are designed to endure extreme climatic conditions, including UV exposure, moisture, and temperature fluctuations, without warping or fading. Each panel is precision-milled for uniformity and features an advanced interlocking system, ensuring seamless installation and enhanced structural integrity.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "97% PVC Raw material"
+                },
+                {
+                    "label": "Application",
+                    "value": "Perfect for ceilings, balconies, porches, exterior wall and transitional indoor, outdoor areas."
+                },
+                {
+                    "label": "Function",
+                    "value": "Best suited for modern elevation homes, resorts, showrooms, and open spaces."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "They add premium aesthetics, provide insulation, and require very low maintenance."
+                },
+                {
+                    "label": "Life time",
+                    "value": "15 Years"
+                },
+                {
+                    "label": "Installation",
+                    "value": "Easy to install using clips or screws on basic framing, ensuring a seamless finish."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "H-Channel, J-Channel"
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "1 Feet"
+                },
+                {
+                    "label": "Height:",
+                    "value": "12 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "1 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "4 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "12 Sq. Ft"
+                },
+                {
+                    "label": "Per Box Piece:",
+                    "value": "12 Piece"
+                }
+            ]
+        },
+        "9": {
+            "description": "PU (Poly Urethane) Stone Panels are cutting-edge building materials that offer the perfect blend of aesthetics and practicality. These light weight, durable panels are designed to replicate the natural beauty and texture of traditional stone with added modern benefits.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Polyurethane (PU)"
+                },
+                {
+                    "label": "Application",
+                    "value": "Wall Panelling, Lobby Areas, Feature Walls, Interior."
+                },
+                {
+                    "label": "Function",
+                    "value": "Water-Proof, Anti-corrosion, Anti-Insect & Heat insulation."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Affordable Price, Safe, Attractive, Durable, Easy Installation & Environmentally friendly."
+                },
+                {
+                    "label": "Life time",
+                    "value": "20-30 years, Depending on Installation & Exposure."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "Silicon Glue, Screw & Nail."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Size:",
+                    "value": "4 Feet Height x 2 Feet Width"
+                },
+                {
+                    "label": "Covered Area:",
+                    "value": "8 Sq. Ft"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "30 mm & 50 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "8+"
+                }
+            ]
+        },
+        "10": {
+            "description": "Bamboo Charcoal Boards are a revolutionary eco-friendly building material crafted from sustainable bamboo, which is carbonised through a high temperature process. As the world shifts towards greener and healthier living environments, these boards stand out for their unique combination of environmental benefits, functional features & stylish design.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Bamboo Fibre Solid Board, PET, PU, PP, PVC film, Stone Powder, Wood Powder & PVC."
+                },
+                {
+                    "label": "Application",
+                    "value": "Interior Wall Decoration & Ceiling"
+                },
+                {
+                    "label": "Function",
+                    "value": "Water-Proof, Fire-Proof, Moisture Proof, Heat Insulation, Anti-Corrosion & Anti-Insect."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Affordable Price, Flexible, Safe, Beauty, Durability, Easy Installation & Environmental Protection."
+                },
+                {
+                    "label": "Life time",
+                    "value": "20 Years."
+                },
+                {
+                    "label": "Installation",
+                    "value": "The installation involves the use of aluminum channels along with a combination of accessories and fasteners."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "H-Profile, Mid-Profile, External Profile, Edge Profile & Collor Profile."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "4 Feet"
+                },
+                {
+                    "label": "Height:",
+                    "value": "8 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "8 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "9 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "32 Sq. Ft"
+                }
+            ]
+        },
+        "11": {
+            "description": "Wallpaper is a versatile decorative material used to enhance interior spaces, offering a wide range of colours, patterns, and textures. Made from paper with 210 GSM, it is commonly used on one wall to create a focal point, drawing attention and adding depth to a room.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Made from paper with 210 GSM & non-woven, offering diverse textures & finishes."
+                },
+                {
+                    "label": "Application",
+                    "value": "Used for interior wall decoration in residential, commercial, and institutional spaces, providing a range of design possibilities."
+                },
+                {
+                    "label": "Function",
+                    "value": "Adds visual interest and complements interior themes, providing a sleek and polished appearance."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Available in a wide array of colours and patterns, easy to clean, and can be used to hide wall imperfections."
+                },
+                {
+                    "label": "Life time",
+                    "value": "5-15 years or more, depending on the area of application and maintenance."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Applied using paste or adhesive, often requiring specific techniques for alignment and smoothing."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "1 Feet 9 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "32 Feet"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "210 GSM"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "51 Patterns in Model 1 | 6 Patterns in Model 2"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "56 Sq. Ft"
+                },
+                {
+                    "label": "Per Box Piece:",
+                    "value": "20"
+                }
+            ]
+        },
+        "12": {
+            "description": "Stone Coated Steel Roofing is a durable roofing solution that combines the strength of steel with the aesthetic appeal of natural stone. Light weight, weather-resistant, and energy-efficient, it offers long-lasting protection with minimal maintenance.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "Made from galvanized steel layer with natural stone chips bonded by acrylic resin."
+                },
+                {
+                    "label": "Application",
+                    "value": "Used in residential, commercial, and public buildings, especially in harsh climates."
+                },
+                {
+                    "label": "Function",
+                    "value": "Provides weather protection, thermal insulation, noise reduction, and fire resistance."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Light weight, durable, low-maintenance, eco-friendly & aesthetically versatile."
+                },
+                {
+                    "label": "Life time",
+                    "value": "40-70 years, or more than 50 years with proper maintenance."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Overlapping of panels with fasteners, frame works & proper sealing."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "Flat Sheet, Eaves Flashing, Valley Gutter, Ridge Cap, Barge Board, 3 Way Ridge & side Flashing."
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Width:",
+                    "value": "2 Feet 8 Inch"
+                },
+                {
+                    "label": "Height:",
+                    "value": "7 Feet 7 Inch"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "0.4 mm"
+                },
+                {
+                    "label": "Patterns:",
+                    "value": "5 Patterns"
+                },
+                {
+                    "label": "Coverage Area:",
+                    "value": "20.22 Sq. Ft"
                 }
             ]
         }
