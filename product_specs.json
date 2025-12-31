@@ -1,0 +1,59 @@
+{
+    "products": {
+        "DEFAULT": {
+            "description": "",
+            "attributes": []
+        },
+        "10": {
+            "description": "Business Bench Polygranite Sheets are eventually utilized to decorate interior walls in both commercial and residential buildings. These sheets are ideal for use in restaurants, theatres, offices, hotels, clubs, hospitals, and hallways. With numerous advantages, Business Bench brings Polygranite Sheets to the market.",
+            "attributes": [
+                {
+                    "label": "Material",
+                    "value": "PVC And Calcium Carbonate, Mimicking Natural Granite Or Marble."
+                },
+                {
+                    "label": "Application",
+                    "value": "Ideal for interior walls in both commercial and residential spaces."
+                },
+                {
+                    "label": "Function",
+                    "value": "Enhances living rooms, Bedrooms, and accent walls with a premium granite-like finish while seamlessly refreshing old surfaces with minimal effort."
+                },
+                {
+                    "label": "Advantages",
+                    "value": "Water Resistant, Durable, Low Maintenance, Cost-Effective & Termite-Resistant."
+                },
+                {
+                    "label": "Life time",
+                    "value": "20-25 Years with proper care."
+                },
+                {
+                    "label": "Installation",
+                    "value": "Easily installed using Adhesive, With minimal surface preparation required."
+                },
+                {
+                    "label": "Accessories",
+                    "value": "PVC Border, PVC Internal Corner, PVC L Corner & Aluminium Accessories"
+                }
+            ],
+            "specification": [
+                {
+                    "label": "Size:",
+                    "value": "8 Feet Height x 4 Feet Width"
+                },
+                {
+                    "label": "Covered Area:",
+                    "value": "32 Sq. Ft"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "3 mm - 36 Patterns | 1.2 mm - 5 Patterns"
+                },
+                {
+                    "label": "Per Sheet Weight:",
+                    "value": "17.5 Kg (3 mm) | 6 Kg (1.2 mm)"
+                }
+            ]
+        }
+    }
+}

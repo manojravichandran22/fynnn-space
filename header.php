@@ -1,4 +1,24 @@
 <!--headerout-->
+<?php
+// Auto-logout if visiting a public page while logged in
+if (isset($_SESSION['user_id'])) {
+    // Specifically check for boolean true to avoid conflicts with data variables like $products
+    $is_public_page = (isset($index) && $index === true) || 
+                      (isset($about) && $about === true) || 
+                      (isset($services) && $services === true) || 
+                      (isset($projects) && $projects === true) || 
+                      (isset($products) && $products === true) || 
+                      (isset($contact) && $contact === true);
+    
+    if ($is_public_page) {
+        session_destroy();
+        $_SESSION = array();
+        // Redirect to same page but now logged out
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
+?>
 <div class="headerbg">
 
 <div class="topheader_outer">
