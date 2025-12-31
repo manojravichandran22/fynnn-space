@@ -25,6 +25,23 @@ try {
     $stmt_sub->execute([$product_id]);
     $subcategories = $stmt_sub->fetchAll(PDO::FETCH_ASSOC);
 
+    // Fetch JSON Specs
+    $json_file = 'product_specs.json';
+    $specs = [];
+    if (file_exists($json_file)) {
+        $json_data = file_get_contents($json_file);
+        $full_specs = json_decode($json_data, true);
+        
+        // Logic: Try to find specs for this specific product ID, else use DEFAULT
+        if (isset($full_specs['products'])) {
+            if (isset($full_specs['products'][$product_id])) {
+                $specs = $full_specs['products'][$product_id];
+            } elseif (isset($full_specs['products']['DEFAULT'])) {
+                $specs = $full_specs['products']['DEFAULT'];
+            }
+        }
+    }
+
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage());
 }
@@ -67,9 +84,12 @@ include('header.php'); ?>
                     <!-- Description Column (Static for now as per template, can be dynamic later) -->
                     <div class="title-column col-lg-12 col-md-12 col-sm-12">
                         <div class="text abtexzt">
-                            <!-- Placeholder for dynamic description if added later -->
-                            Currently viewing our collection of <?php echo htmlspecialchars($product['cate_title']); ?>. 
-                            These products are designed to enhance your interior spaces with durability and style.
+                            <?php if (!empty($specs['description'])): ?>
+                                <?php echo nl2br(htmlspecialchars($specs['description'])); ?>
+                            <?php else: ?>
+                                Currently viewing our collection of <?php echo htmlspecialchars($product['cate_title']); ?>. 
+                                These products are designed to enhance your interior spaces with durability and style.
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -78,15 +98,25 @@ include('header.php'); ?>
                             <h3>SPECIFICATION</h3>
                         </div>
                         
-                        <!-- Static Specs from template - ideally these should be dynamic too but user didn't ask for spec CRUD -->
-                        <div class="fscontact-info">
-                            <span class="icon  fflaticon-before"><img src="images/tick.svg"></span> 
-                            <p class="p2p"><span class="p2p-span">Material :</span> Premium Quality Finish</p>
-                        </div>
-                         <div class="fscontact-info">
-                            <span class="icon  fflaticon-before"><img src="images/tick.svg"></span> 
-                            <p class="p2p"><span class="p2p-span">Application :</span> Residential & Commercial</p>
-                        </div>
+                        <!-- Dynamic Specs from JSON -->
+                        <?php if (!empty($specs['attributes'])): ?>
+                            <?php foreach ($specs['attributes'] as $attr): ?>
+                                <div class="fscontact-info">
+                                    <span class="icon  fflaticon-before"><img src="images/tick.svg"></span> 
+                                    <p class="p2p"><span class="p2p-span"><?php echo htmlspecialchars($attr['label']); ?> :</span> <?php echo htmlspecialchars($attr['value']); ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <!-- Fallback Static Specs if JSON fails -->
+                            <div class="fscontact-info">
+                                <span class="icon  fflaticon-before"><img src="images/tick.svg"></span> 
+                                <p class="p2p"><span class="p2p-span">Material :</span> Premium Quality Finish</p>
+                            </div>
+                             <div class="fscontact-info">
+                                <span class="icon  fflaticon-before"><img src="images/tick.svg"></span> 
+                                <p class="p2p"><span class="p2p-span">Application :</span> Residential & Commercial</p>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 
                     <!-- Product Image -->
