@@ -29,8 +29,13 @@ if (isset($_GET['fetch_id'])) {
         $stmt_sub = $db->prepare("SELECT * FROM product_subcategories WHERE product_id = ? ORDER BY id DESC");
         $stmt_sub->execute([$fetch_id]);
         $subcategories = $stmt_sub->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fetch Unique Groups for THIS Product
+        $stmt_grps = $db->prepare("SELECT DISTINCT group_name FROM product_subcategories WHERE product_id = ? AND group_name IS NOT NULL AND group_name != '' ORDER BY group_name ASC");
+        $stmt_grps->execute([$fetch_id]);
+        $unique_groups = $stmt_grps->fetchAll(PDO::FETCH_COLUMN);
         
-        echo json_encode(['status' => 'success', 'product' => $product, 'subcategories' => $subcategories]);
+        echo json_encode(['status' => 'success', 'product' => $product, 'subcategories' => $subcategories, 'unique_groups' => $unique_groups]);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
@@ -150,6 +155,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 
 // Fetch All Categories for Display
 $products = $db->query("SELECT * FROM products ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch Unique Group Names for Autosuggest
+$group_names = [];
+try {
+    $stmt_grp = $db->query("SELECT DISTINCT group_name FROM product_subcategories WHERE group_name IS NOT NULL AND group_name != '' ORDER BY group_name ASC");
+    $group_names = $stmt_grp->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {
+    // silently fail or log if needed, autosuggest just won't work
+}
 
 if (isset($_GET['msg'])) {
     $message = htmlspecialchars($_GET['msg']);
@@ -288,7 +302,7 @@ if (isset($_GET['msg'])) {
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Group Name / Heading</label>
-                                <input type="text" name="subcat_group" class="form-control" placeholder="e.g. 3MM Pattern">
+                                <input type="text" name="subcat_group" class="form-control" placeholder="e.g. 3MM Pattern" list="group_names_list" autocomplete="off">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Subcategory Title</label>
@@ -372,7 +386,8 @@ if (isset($_GET['msg'])) {
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Group Name</label>
-                                <input type="text" name="new_subcat_group" class="form-control" placeholder="e.g. Pattern A">
+                                <input type="text" name="new_subcat_group" class="form-control" placeholder="e.g. Pattern A" list="edit_dynamic_list" autocomplete="off">
+                                <datalist id="edit_dynamic_list"></datalist>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Title</label>
@@ -392,6 +407,13 @@ if (isset($_GET['msg'])) {
             </div>
         </div>
     </div>
+
+    <!-- Shared Datalist for Group Names -->
+    <datalist id="group_names_list">
+        <?php foreach ($group_names as $grp): ?>
+            <option value="<?php echo htmlspecialchars($grp); ?>">
+        <?php endforeach; ?>
+    </datalist>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -460,6 +482,16 @@ if (isset($_GET['msg'])) {
                             $('#editImagePreview').attr('src', 'images/products/' + prod.cat_image).show();
                         } else {
                             $('#editImagePreview').hide();
+                        }
+
+                        // Populate Dynamic Group List
+                        var groups = response.unique_groups;
+                        var dl = $('#edit_dynamic_list');
+                        dl.empty();
+                        if(groups && groups.length > 0) {
+                            groups.forEach(function(g) {
+                                dl.append('<option value="'+g+'">');
+                            });
                         }
                     }
                 });
