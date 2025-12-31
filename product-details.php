@@ -156,6 +156,25 @@ include('header.php'); ?>
                 
                 <div class="headingpar proejcthead" >
                     <h3><?php echo htmlspecialchars($group_title); ?></h3>
+                    
+                    <?php if (!empty($specs['specification'])): ?>
+                        <div style="text-align: center; margin-bottom: 20px; font-size: 16px;">
+                            <?php 
+                            $total_specs = count($specs['specification']);
+                            foreach ($specs['specification'] as $index => $spec): 
+                            ?>
+                                <span style="display: inline-block; margin: 0 5px;">
+                                    <?php if (!empty($spec['label'])): ?>
+                                        <span style="color: #FFA500;"><?php echo htmlspecialchars($spec['label']); ?></span>
+                                    <?php endif; ?>
+                                    <span style="color: inherit;"><?php echo htmlspecialchars($spec['value']); ?></span>
+                                    <?php if ($index < $total_specs - 1): ?>
+                                        <span style="color: #ccc; margin-left: 10px;">|</span>
+                                    <?php endif; ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="row mb-5">

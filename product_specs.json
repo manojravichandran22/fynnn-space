@@ -35,6 +35,24 @@
                     "label": "Accessories",
                     "value": "PVC Border, PVC Internal Corner, PVC L Corner & Aluminium Accessories"
                 }
+            ],
+            "specification": [
+                {
+                    "label": "Size:",
+                    "value": "8 Feet Height x 4 Feet Width"
+                },
+                {
+                    "label": "Covered Area:",
+                    "value": "32 Sq. Ft"
+                },
+                {
+                    "label": "Thickness:",
+                    "value": "3 mm - 36 Patterns | 1.2 mm - 5 Patterns"
+                },
+                {
+                    "label": "Per Sheet Weight:",
+                    "value": "17.5 Kg (3 mm) | 6 Kg (1.2 mm)"
+                }
             ]
         }
     }

@@ -48,8 +48,35 @@ if (isset($_GET['fetch_id'])) {
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     try {
+        // Fetch images before deleting from DB
+        $stmt_cat = $db->prepare("SELECT cat_image FROM products WHERE id = ?");
+        $stmt_cat->execute([$delete_id]);
+        $cat_row = $stmt_cat->fetch(PDO::FETCH_ASSOC);
+        
+        $stmt_sub = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE product_id = ?");
+        $stmt_sub->execute([$delete_id]);
+        $sub_images = $stmt_sub->fetchAll(PDO::FETCH_COLUMN);
+
+        // Delete from database
         $stmt = $db->prepare("DELETE FROM products WHERE id = ?");
         $stmt->execute([$delete_id]);
+
+        $target_dir = "images/products/";
+
+        // Delete Category Image
+        if ($cat_row && !empty($cat_row['cat_image'])) {
+            $file_path = $target_dir . $cat_row['cat_image'];
+            if (file_exists($file_path)) unlink($file_path);
+        }
+
+        // Delete all Subcategory Images
+        foreach ($sub_images as $img) {
+            if (!empty($img)) {
+                $file_path = $target_dir . $img;
+                if (file_exists($file_path)) unlink($file_path);
+            }
+        }
+
         header("Location: products-add.php?msg=Category deleted successfully");
         exit();
     } catch (PDOException $e) {
@@ -57,14 +84,23 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Handle Delete Subcategory (via simple GET for now, simplifies modal logic vs AJAX delete)
+// Handle Delete Subcategory
 if (isset($_GET['delete_sub_id'])) {
     $delete_sub_id = $_GET['delete_sub_id'];
-    $redirect_id = $_GET['parent_id']; 
     try {
+        // Fetch image before deleting
+        $stmt_img = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE id = ?");
+        $stmt_img->execute([$delete_sub_id]);
+        $row = $stmt_img->fetch(PDO::FETCH_ASSOC);
+
         $stmt = $db->prepare("DELETE FROM product_subcategories WHERE id = ?");
         $stmt->execute([$delete_sub_id]);
-        // stay on page, maybe pass a param to re-open modal? Simple refresh is safer for now.
+
+        if ($row && !empty($row['subcat_image'])) {
+            $file_path = "images/products/" . $row['subcat_image'];
+            if (file_exists($file_path)) unlink($file_path);
+        }
+
         header("Location: products-add.php?msg=Subcategory deleted"); 
         exit();
     } catch (PDOException $e) {
