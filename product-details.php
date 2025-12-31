@@ -205,7 +205,7 @@ include('header.php'); ?>
                             <div class="projecthomeout">
                                 <div class="projimg">
                                     <?php if (!empty($sub['subcat_image'])): ?>
-                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:300px; object-fit:cover;" >
+                                        <img src="images/products/<?php echo htmlspecialchars($sub['subcat_image']); ?>" style="width:100%; height:500px; object-fit:cover;" >
                                     <?php else: ?>
                                         <img src="images/default.jpg" style="width:100%; height:300px; object-fit:cover;">
                                     <?php endif; ?>

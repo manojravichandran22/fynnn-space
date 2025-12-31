@@ -458,19 +458,21 @@ pointer-events: none;
   float: left;
   width: 100%;
   margin-top: 25px;
-   border: 20px solid #ffffff;
+  border: 15px solid #ffffff;
   padding: 0;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
 }
 .projimg
 {  float: left;
   width: 100%;
   overflow: hidden;
-
+  aspect-ratio: 1;
 }
 .projimg img
 {
   width: 100%;
-    transition: all 500ms ease;
+  height: 100%;
+  transition: all 500ms ease;
   transform: scale(1);
   }
 
@@ -489,6 +491,7 @@ pointer-events: none;
   text-align: center;
 
 }
+
 .smmob h6
 {
   float: left;
