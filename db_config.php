@@ -10,6 +10,7 @@ if (!is_dir($db_folder)) {
 try {
     $db = new PDO('sqlite:' . $db_path);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db->exec("PRAGMA foreign_keys = ON;");
 
     // Create users table if not exists (only runs once)
     $db->exec("CREATE TABLE IF NOT EXISTS users (

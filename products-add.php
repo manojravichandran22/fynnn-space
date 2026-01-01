@@ -48,28 +48,39 @@ if (isset($_GET['fetch_id'])) {
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     try {
-        // Fetch images before deleting from DB
-        $stmt_cat = $db->prepare("SELECT cat_image FROM products WHERE id = ?");
-        $stmt_cat->execute([$delete_id]);
-        $cat_row = $stmt_cat->fetch(PDO::FETCH_ASSOC);
+        $db->beginTransaction();
 
+        // 1. Fetch images from Products table (category and description images)
+        $stmt_prod = $db->prepare("SELECT cat_image, description_image FROM products WHERE id = ?");
+        $stmt_prod->execute([$delete_id]);
+        $prod_row = $stmt_prod->fetch(PDO::FETCH_ASSOC);
+
+        // 2. Fetch images from Subcategories table
         $stmt_sub = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE product_id = ?");
         $stmt_sub->execute([$delete_id]);
         $sub_images = $stmt_sub->fetchAll(PDO::FETCH_COLUMN);
 
-        // Delete from database
+        // 3. Delete records from database (Cascading delete will handle subcategories if FK enabled, 
+        // but explicit delete is safer or we can rely on PRAGMA foreign_keys = ON)
         $stmt = $db->prepare("DELETE FROM products WHERE id = ?");
         $stmt->execute([$delete_id]);
 
+        $db->commit();
+
         $target_dir = "images/products/";
 
-        // Delete Category Image
-        if ($cat_row && !empty($cat_row['cat_image'])) {
-            $file_path = $target_dir . $cat_row['cat_image'];
-            if (file_exists($file_path)) unlink($file_path);
+        // 4. Delete physical files
+        if ($prod_row) {
+            if (!empty($prod_row['cat_image'])) {
+                $file_path = $target_dir . $prod_row['cat_image'];
+                if (file_exists($file_path)) unlink($file_path);
+            }
+            if (!empty($prod_row['description_image'])) {
+                $file_path = $target_dir . $prod_row['description_image'];
+                if (file_exists($file_path)) unlink($file_path);
+            }
         }
 
-        // Delete all Subcategory Images
         foreach ($sub_images as $img) {
             if (!empty($img)) {
                 $file_path = $target_dir . $img;
@@ -77,9 +88,10 @@ if (isset($_GET['delete_id'])) {
             }
         }
 
-        header("Location: products-add?msg=Category deleted successfully");
+        header("Location: products-add?msg=Category and all related data deleted successfully");
         exit();
     } catch (PDOException $e) {
+        if ($db->inTransaction()) $db->rollBack();
         $error = "Error deleting category: " . $e->getMessage();
     }
 }
@@ -112,7 +124,7 @@ if (isset($_GET['delete_sub_id'])) {
 if (isset($_GET['delete_group']) && isset($_GET['product_id'])) {
     $group_name = $_GET['delete_group'];
     $product_id = $_GET['product_id'];
-    
+
     try {
         // Fetch all images in this group before deleting
         $stmt_imgs = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE product_id = ? AND group_name = ?");
@@ -560,10 +572,10 @@ if (isset($_GET['msg'])) {
                 </div>
 
                 <!-- FORM -->
-                <form action="products-add" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data" style="height:100%;display:flex;flex-direction:column;">
                     <input type="hidden" name="action" value="add_product">
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y:auto;max-height:55vh;">
 
                         <!-- CATEGORY CARD -->
                         <div class="card border-0 shadow-sm mb-4">
@@ -664,7 +676,7 @@ if (isset($_GET['msg'])) {
                     </div>
 
                     <!-- FOOTER -->
-                    <div class="modal-footer bg-light">
+                    <div class="modal-footer bg-light sticky-modal-footer" style="position:sticky;bottom:0;z-index:10;">
                         <button type="button"
                             class="btn btn-outline-secondary"
                             data-bs-dismiss="modal">
@@ -720,7 +732,7 @@ if (isset($_GET['msg'])) {
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg">
-                <form action="products-add" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data" style="height:100%;display:flex;flex-direction:column;">
                     <input type="hidden" name="action" value="edit_product">
                     <input type="hidden" name="product_id" id="editProductId">
                     <input type="hidden" name="existing_cat_image" id="editExistingImage">
@@ -734,7 +746,7 @@ if (isset($_GET['msg'])) {
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="overflow-y:auto;max-height:55vh;">
                         <!-- CATEGORY CARD -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body">
@@ -784,7 +796,7 @@ if (isset($_GET['msg'])) {
                     </div>
 
                     <!-- FOOTER -->
-                    <div class="modal-footer bg-light">
+                    <div class="modal-footer bg-light sticky-modal-footer" style="position:sticky;bottom:0;z-index:10;">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="bi bi-check-circle me-1"></i> Update Product
@@ -799,7 +811,7 @@ if (isset($_GET['msg'])) {
     <div class="modal fade" id="addSubcatModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg">
-                <form action="products-add" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data" style="height:100%;display:flex;flex-direction:column;">
                     <input type="hidden" name="action" value="add_subcategory">
                     <input type="hidden" name="product_id" id="subcatProductId">
 
@@ -811,7 +823,7 @@ if (isset($_GET['msg'])) {
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body add-subcat-modal-body" style="overflow-y:auto;max-height:55vh;">
                         <div class="card border-0 shadow-sm mb-3">
                             <div class="card-body">
                                 <h6 class="fw-bold text-primary mb-2">
@@ -878,7 +890,7 @@ if (isset($_GET['msg'])) {
                         </div>
                     </div>
                     <!-- FOOTER -->
-                    <div class="modal-footer bg-light">
+                    <div class="modal-footer bg-light sticky-modal-footer" style="position:sticky;bottom:0;z-index:10;">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="bi bi-plus-circle me-1"></i> Add Subcategory
@@ -932,23 +944,36 @@ if (isset($_GET['msg'])) {
 
     <!-- DELETE CONFIRMATION MODAL (NEW) -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-danger text-white border-0">
-                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+        <div class="modal-dialog modal-dialog-centered justify-content-center">
+            <div class="modal-content border-0 shadow-lg delete-modal-width">
+                <div class="modal-header bg-primary text-white border-0">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Confirm Deletion
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body text-center py-4">
-                    <p class="mb-0 fs-5" id="deleteConfirmMessage">Are you sure you want to delete this item?</p>
-                    <small class="text-muted">This action cannot be undone and will permanently remove the record.</small>
+                    <p class="mb-0 fs-5" id="deleteConfirmMessage">
+                        Are you sure you want to delete this item?
+                    </p>
+                    <!-- <small class="text-muted">
+                    This action cannot be undone and will permanently remove the record.
+                </small> -->
                 </div>
+
                 <div class="modal-footer bg-light border-0 justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-                    <a href="#" id="deleteConfirmBtn" class="btn btn-danger px-4 shadow-sm">Delete Permanently</a>
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <a href="#" id="deleteConfirmBtn" class="btn btn-primary px-4 shadow-sm">
+                        Delete Permanently
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Shared Datalist for Group Names -->
     <datalist id="group_names_list">
@@ -970,14 +995,14 @@ if (isset($_GET['msg'])) {
                 var title = $(this).data('title');
                 $('#subcatProductId').val(id);
                 $('#subcatCategoryName').text(title);
-                
+
                 // Clear and show loading
                 $('#editSubcatListContainer').html('<div class="text-center py-3"><div class="spinner-border text-primary spinner-border-sm"></div></div>');
-                
+
                 $('#addSubcatModal').modal('show');
 
                 // Fetch existing subcategories
-                $.get('products-add.php?fetch_id=' + id, function(response) {
+                $.get('products-add?fetch_id=' + id, function(response) {
                     if (response.status === 'success') {
                         var subs = response.subcategories;
                         var subHtml = '';
@@ -1014,7 +1039,7 @@ if (isset($_GET['msg'])) {
                             $('#editSubcatTitleText').val(stitle);
                             $('#editSubcatGroupName').val(sgroup);
                             $('#editExistingSubcatImage').val(simg);
-                            
+
                             if (simg) {
                                 $('#editSubcatPreview').attr('src', 'images/products/' + simg).show();
                             } else {
@@ -1064,7 +1089,7 @@ if (isset($_GET['msg'])) {
                             // Display each group
                             Object.keys(grouped).forEach(function(groupName) {
                                 var items = grouped[groupName];
-                                
+
                                 // Group header with delete button
                                 subHtml += '<div class="d-flex justify-content-between align-items-center mb-2 mt-3">';
                                 subHtml += '<h6 class="mb-0 text-primary"><i class="bi bi-folder me-1"></i>' + groupName + '</h6>';
@@ -1075,7 +1100,7 @@ if (isset($_GET['msg'])) {
                                 // Display subcategories in this group
                                 items.forEach(function(s) {
                                     var img = s.subcat_image ? 'images/products/' + s.subcat_image : 'images/placeholder.png';
-                                    
+
                                     subHtml += '<div class="subcat-item">';
                                     subHtml += '<div class="d-flex align-items-center">';
                                     subHtml += '<img src="' + img + '" class="subcat-img">';
@@ -1141,7 +1166,7 @@ if (isset($_GET['msg'])) {
             e.preventDefault();
             var href = $(this).attr('href') || $(this).data('href');
             var msg = $(this).data('msg') || "Are you sure you want to delete this item?";
-            
+
             $('#deleteConfirmMessage').text(msg);
             $('#deleteConfirmBtn').attr('href', href);
             $('#deleteConfirmModal').modal('show');

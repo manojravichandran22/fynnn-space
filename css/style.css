@@ -1,3 +1,33 @@
+/* Responsive and sticky modal footer for Add Subcategory modal */
+.add-subcat-modal-body {
+  overflow-y: auto;
+  max-height: 55vh;
+}
+.sticky-modal-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #f8f9fa;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+}
+
+@media (max-width: 767px) {
+  .modal-dialog {
+    max-width: 98vw;
+    margin: 0.5rem auto;
+  }
+  .add-subcat-modal-body {
+    max-height: 45vh;
+    padding: 0.5rem;
+  }
+  .modal-content {
+    border-radius: 10px;
+  }
+  .modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 html, body{

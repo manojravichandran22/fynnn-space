@@ -5,6 +5,8 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 // 🔴 STEP 1: Redirect .php → clean URL
 if (str_ends_with($uri, '.php')) {
     $clean = str_replace('.php', '', $uri);
+  //  $query = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
+   // header("Location: $clean$query", true, 301);
     header("Location: $clean", true, 301);
     exit;
 }
