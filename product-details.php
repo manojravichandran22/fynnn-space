@@ -81,11 +81,11 @@ include('header.php'); ?>
             <div class="ccaro-out">
                 <div class="row clearfix">
                     
-                    <!-- Description Column (Static for now as per template, can be dynamic later) -->
+                    <!-- Description Column -->
                     <div class="title-column col-lg-12 col-md-12 col-sm-12">
                         <div class="text abtexzt">
-                            <?php if (!empty($specs['description'])): ?>
-                                <?php echo nl2br(htmlspecialchars($specs['description'])); ?>
+                            <?php if (!empty($product['description'])): ?>
+                                <?php echo nl2br(htmlspecialchars($product['description'])); ?>
                             <?php else: ?>
                                 Currently viewing our collection of <?php echo htmlspecialchars($product['cate_title']); ?>. 
                                 These products are designed to enhance your interior spaces with durability and style.
@@ -119,10 +119,12 @@ include('header.php'); ?>
                         <?php endif; ?>
                     </div>
                 
-                    <!-- Product Image -->
+                    <!-- Description Image (Right Side) -->
                     <div class="video-column col-lg-4 col-md-12 col-sm-12">
                         <div class="abtus-img">
-                             <?php if (!empty($product['cat_image'])): ?>
+                             <?php if (!empty($product['description_image'])): ?>
+                                <img src="images/products/<?php echo htmlspecialchars($product['description_image']); ?>" style="width:100%; height:400px; object-fit:cover;" />
+                            <?php elseif (!empty($product['cat_image'])): ?>
                                 <img src="images/products/<?php echo htmlspecialchars($product['cat_image']); ?>" style="width:100%; height:400px; object-fit:cover;" />
                             <?php endif; ?>
                         </div>
@@ -134,7 +136,7 @@ include('header.php'); ?>
     </div>
 </section>
 <!-- Advantages & Features Section -->
-<section class="advantages-section" style="padding: 40px 0; ">
+<!-- <section class="advantages-section" style="padding: 40px 0; ">
     <div class="auto-container">
         <div class="headingparr" style="margin-bottom: 30px; text-align: center !important;">
             <h3 style="text-align: center !important;">Advantages & Features</h3>
@@ -154,7 +156,7 @@ include('header.php'); ?>
             <p>Content coming soon...</p>
         <?php endif; ?>
     </div>
-</section>
+</section> -->
 
 <div class="clearfix"></div>
 
