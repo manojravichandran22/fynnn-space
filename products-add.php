@@ -132,7 +132,7 @@ if (isset($_GET['delete_group']) && isset($_GET['product_id'])) {
             }
         }
 
-        header("Location: products-add.php?msg=Group deleted successfully");
+        header("Location: products-add?msg=Group deleted successfully");
         exit();
     } catch (PDOException $e) {
         $error = "Error deleting group: " . $e->getMessage();
@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             $stmt = $db->prepare("INSERT INTO product_subcategories (product_id, subcat_title, subcat_image, group_name) VALUES (?, ?, ?, ?)");
             $stmt->execute([$product_id, $subcat_title, $subcat_image, $group_name]);
 
-            header("Location: products-add.php?msg=Subcategory added successfully");
+            header("Location: products-add?msg=Subcategory added successfully");
             exit();
         } else {
             $error = "Please upload a subcategory image";
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         $stmt = $db->prepare("UPDATE product_subcategories SET subcat_title = ?, subcat_image = ?, group_name = ? WHERE id = ?");
         $stmt->execute([$subcat_title, $new_image, $group_name, $subcat_id]);
 
-        header("Location: products-add.php?msg=Subcategory updated successfully&product_id=" . $product_id);
+        header("Location: products-add?msg=Subcategory updated successfully&product_id=" . $product_id);
         exit();
     } catch (Exception $e) {
         $error = "Error updating subcategory: " . $e->getMessage();
@@ -526,7 +526,7 @@ if (isset($_GET['msg'])) {
                                             <button class="btn btn-sm btn-primary me-1 add-subcat-btn" data-id="<?php echo $row['id']; ?>" data-title="<?php echo htmlspecialchars($row['cate_title']); ?>" data-bs-toggle="tooltip" data-bs-title="Add Subcategory"><i class="bi bi-plus-circle"></i></button>
                                             <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="tooltip" data-bs-title="View Details"><i class="bi bi-eye"></i></button>
                                             <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="tooltip" data-bs-title="Edit Product"><i class="bi bi-pencil-square"></i></button>
-                                            <a href="products-add.php?delete_id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger confirm-delete" data-msg="Delete this category and all its subcategories?" data-bs-toggle="tooltip" data-bs-title="Delete Product"><i class="bi bi-trash"></i></a>
+                                            <a href="products-add?delete_id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger confirm-delete" data-msg="Delete this category and all its subcategories?" data-bs-toggle="tooltip" data-bs-title="Delete Product"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -720,7 +720,7 @@ if (isset($_GET['msg'])) {
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg">
-                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="edit_product">
                     <input type="hidden" name="product_id" id="editProductId">
                     <input type="hidden" name="existing_cat_image" id="editExistingImage">
@@ -799,7 +799,7 @@ if (isset($_GET['msg'])) {
     <div class="modal fade" id="addSubcatModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content border-0 shadow-lg">
-                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add_subcategory">
                     <input type="hidden" name="product_id" id="subcatProductId">
 
@@ -893,7 +893,7 @@ if (isset($_GET['msg'])) {
     <div class="modal fade" id="editSubcatModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
-                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="edit_subcategory">
                     <input type="hidden" name="subcat_id" id="editSubcatId">
                     <input type="hidden" name="product_id" id="editSubcatProductId">
@@ -992,7 +992,7 @@ if (isset($_GET['msg'])) {
                                 subHtml += '<td><span class="group-badge">' + (s.group_name || 'General') + '</span></td>';
                                 subHtml += '<td>';
                                 subHtml += '<button type="button" class="btn btn-sm btn-outline-primary me-1 edit-sub-btn" data-id="' + s.id + '" data-prodid="' + id + '" data-title="' + s.subcat_title + '" data-group="' + (s.group_name || '') + '" data-img="' + s.subcat_image + '"><i class="bi bi-pencil"></i></button>';
-                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_sub_id=' + s.id + '" data-msg="Delete this subcategory?"><i class="bi bi-trash"></i></button>';
+                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add?delete_sub_id=' + s.id + '" data-msg="Delete this subcategory?"><i class="bi bi-trash"></i></button>';
                                 subHtml += '</td></tr>';
                             });
                             subHtml += '</tbody></table></div>';
@@ -1068,7 +1068,7 @@ if (isset($_GET['msg'])) {
                                 // Group header with delete button
                                 subHtml += '<div class="d-flex justify-content-between align-items-center mb-2 mt-3">';
                                 subHtml += '<h6 class="mb-0 text-primary"><i class="bi bi-folder me-1"></i>' + groupName + '</h6>';
-                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_group=' + encodeURIComponent(groupName) + '&product_id=' + prod.id + '" data-msg="Delete entire group ' + groupName.replace(/'/g, "\\'") + '? This will remove all ' + items.length + ' subcategories in this group."><i class="bi bi-trash me-1"></i>Delete Group</button>';
+                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add?delete_group=' + encodeURIComponent(groupName) + '&product_id=' + prod.id + '" data-msg="Delete entire group ' + groupName.replace(/'/g, "\\'") + '? This will remove all ' + items.length + ' subcategories in this group."><i class="bi bi-trash me-1"></i>Delete Group</button>';
                                 subHtml += '</div>';
                                 subHtml += '<hr class="mt-1 mb-2">';
 
@@ -1081,7 +1081,7 @@ if (isset($_GET['msg'])) {
                                     subHtml += '<img src="' + img + '" class="subcat-img">';
                                     subHtml += '<div><strong>' + s.subcat_title + '</strong></div>';
                                     subHtml += '</div>';
-                                    subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_sub_id=' + s.id + '&parent_id=' + prod.id + '" data-msg="Delete this subcategory?" data-bs-toggle="tooltip" data-bs-title="Delete Subcategory"><i class="bi bi-trash"></i></button>';
+                                    subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add?delete_sub_id=' + s.id + '&parent_id=' + prod.id + '" data-msg="Delete this subcategory?" data-bs-toggle="tooltip" data-bs-title="Delete Subcategory"><i class="bi bi-trash"></i></button>';
                                     subHtml += '</div>';
                                 });
                             });
