@@ -108,6 +108,99 @@ if (isset($_GET['delete_sub_id'])) {
     }
 }
 
+// Handle Delete Group (and all subcategories in that group)
+if (isset($_GET['delete_group']) && isset($_GET['product_id'])) {
+    $group_name = $_GET['delete_group'];
+    $product_id = $_GET['product_id'];
+    
+    try {
+        // Fetch all images in this group before deleting
+        $stmt_imgs = $db->prepare("SELECT subcat_image FROM product_subcategories WHERE product_id = ? AND group_name = ?");
+        $stmt_imgs->execute([$product_id, $group_name]);
+        $images = $stmt_imgs->fetchAll(PDO::FETCH_COLUMN);
+
+        // Delete all subcategories in this group
+        $stmt = $db->prepare("DELETE FROM product_subcategories WHERE product_id = ? AND group_name = ?");
+        $stmt->execute([$product_id, $group_name]);
+
+        // Delete all images
+        $target_dir = "images/products/";
+        foreach ($images as $img) {
+            if (!empty($img)) {
+                $file_path = $target_dir . $img;
+                if (file_exists($file_path)) unlink($file_path);
+            }
+        }
+
+        header("Location: products-add.php?msg=Group deleted successfully");
+        exit();
+    } catch (PDOException $e) {
+        $error = "Error deleting group: " . $e->getMessage();
+    }
+}
+
+// Add Subcategory to Existing Product
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add_subcategory') {
+    $product_id = $_POST['product_id'];
+    $subcat_title = $_POST['subcat_title'];
+    $group_name = !empty($_POST['subcat_group']) ? $_POST['subcat_group'] : 'General';
+
+    $target_dir = "images/products/";
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
+
+    try {
+        if (!empty($_FILES['subcat_image']['name'])) {
+            $subcat_image = time() . "_sub_" . basename($_FILES["subcat_image"]["name"]);
+            move_uploaded_file($_FILES["subcat_image"]["tmp_name"], $target_dir . $subcat_image);
+
+            $stmt = $db->prepare("INSERT INTO product_subcategories (product_id, subcat_title, subcat_image, group_name) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$product_id, $subcat_title, $subcat_image, $group_name]);
+
+            header("Location: products-add.php?msg=Subcategory added successfully");
+            exit();
+        } else {
+            $error = "Please upload a subcategory image";
+        }
+    } catch (Exception $e) {
+        $error = "Error adding subcategory: " . $e->getMessage();
+    }
+}
+
+// Update Subcategory
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'edit_subcategory') {
+    $subcat_id = $_POST['subcat_id'];
+    $product_id = $_POST['product_id'];
+    $subcat_title = $_POST['subcat_title'];
+    $group_name = !empty($_POST['group_name']) ? $_POST['group_name'] : 'General';
+    $existing_image = $_POST['existing_subcat_image'];
+
+    $target_dir = "images/products/";
+    $new_image = $existing_image;
+
+    try {
+        if (!empty($_FILES['subcat_image']['name'])) {
+            $new_image = time() . "_sub_" . basename($_FILES["subcat_image"]["name"]);
+            if (move_uploaded_file($_FILES["subcat_image"]["tmp_name"], $target_dir . $new_image)) {
+                // Delete old image
+                if ($existing_image && file_exists($target_dir . $existing_image)) {
+                    unlink($target_dir . $existing_image);
+                }
+            }
+        }
+
+        $stmt = $db->prepare("UPDATE product_subcategories SET subcat_title = ?, subcat_image = ?, group_name = ? WHERE id = ?");
+        $stmt->execute([$subcat_title, $new_image, $group_name, $subcat_id]);
+
+        header("Location: products-add.php?msg=Subcategory updated successfully&product_id=" . $product_id);
+        exit();
+    } catch (Exception $e) {
+        $error = "Error updating subcategory: " . $e->getMessage();
+    }
+}
+
+
 // Save New Category (and optional Subcategory)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add_product') {
     $cate_title = $_POST['cate_title'];
@@ -430,9 +523,10 @@ if (isset($_GET['msg'])) {
                                         <td class="fw-bold"><?php echo htmlspecialchars($row['cate_title']); ?></td>
                                         <td><?php echo date('d/m/Y', strtotime($row['created_at'])); ?></td>
                                         <td class="text-end">
+                                            <button class="btn btn-sm btn-primary me-1 add-subcat-btn" data-id="<?php echo $row['id']; ?>" data-title="<?php echo htmlspecialchars($row['cate_title']); ?>" data-bs-toggle="tooltip" data-bs-title="Add Subcategory"><i class="bi bi-plus-circle"></i></button>
                                             <button class="btn btn-sm btn-outline-info me-1 view-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="tooltip" data-bs-title="View Details"><i class="bi bi-eye"></i></button>
                                             <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="tooltip" data-bs-title="Edit Product"><i class="bi bi-pencil-square"></i></button>
-                                            <a href="products-add.php?delete_id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this category?');" data-bs-toggle="tooltip" data-bs-title="Delete Product"><i class="bi bi-trash"></i></a>
+                                            <a href="products-add.php?delete_id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger confirm-delete" data-msg="Delete this category and all its subcategories?" data-bs-toggle="tooltip" data-bs-title="Delete Product"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -565,7 +659,7 @@ if (isset($_GET['msg'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>-->
 
                     </div>
 
@@ -624,67 +718,234 @@ if (isset($_GET['msg'])) {
 
     <!-- EDIT MODAL -->
     <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
                 <form action="products-add.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="edit_product">
                     <input type="hidden" name="product_id" id="editProductId">
                     <input type="hidden" name="existing_cat_image" id="editExistingImage">
+                    <input type="hidden" name="existing_description_image" id="editExistingDescImage">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Product</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <!-- HEADER -->
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-pencil-square me-2"></i> Edit Product
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- CATEGORY CARD -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-folder me-1"></i> Product Category
+                                </h6>
+
+                                <div class="row align-items-end">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Category Title</label>
+                                        <input type="text" name="cate_title" id="editCatTitle" class="form-control" placeholder="e.g. Wall Panels" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Category Image</label>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img id="editImagePreview" src="" class="rounded border" height="60" style="object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <input type="file" name="cat_image" class="form-control" accept="image/*" onchange="previewEditCatImage(event)">
+                                                <small class="text-muted">Leave empty to keep existing image</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="description" id="editDescription" class="form-control" rows="3" placeholder="Enter product description..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Description Image</label>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img id="editDescImagePreview" src="" class="rounded border" height="60" style="object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <input type="file" name="description_image" class="form-control" accept="image/*" onchange="previewEditDescImage(event)">
+                                                <small class="text-muted">Leave empty to keep existing image</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-circle me-1"></i> Update Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD SUBCATEGORY MODAL -->
+    <div class="modal fade" id="addSubcatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg">
+                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="add_subcategory">
+                    <input type="hidden" name="product_id" id="subcatProductId">
+
+                    <!-- HEADER -->
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-plus-circle me-2"></i> Add Subcategory
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-2">
+                                    <i class="bi bi-folder me-1"></i> Category
+                                </h6>
+                                <p class="mb-0"><span id="subcatCategoryName"></span></p>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-layers me-1"></i> Subcategory Details
+                                </h6>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Group Name</label>
+                                        <input type="text"
+                                            name="subcat_group"
+                                            class="form-control"
+                                            placeholder="e.g. 3MM Pattern"
+                                            list="group_names_list">
+                                        <small class="text-muted">Optional - Groups subcategories together</small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Subcategory Title</label>
+                                        <input type="text"
+                                            name="subcat_title"
+                                            class="form-control"
+                                            placeholder="e.g. Marble Design"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Subcategory Image</label>
+                                    <input type="file"
+                                        name="subcat_image"
+                                        class="form-control"
+                                        accept="image/*"
+                                        onchange="previewAddSubImage(event)"
+                                        required>
+                                    <img id="addSubPreview"
+                                        class="mt-2 rounded d-none border"
+                                        height="70">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm mt-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-layers-half me-1"></i> Existing Subcategories
+                                </h6>
+                                <div id="editSubcatListContainer">
+                                    <!-- AJAX loaded list of subcategories with edit/delete buttons -->
+                                    <div class="text-center py-3">
+                                        <div class="spinner-border text-primary spinner-border-sm"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FOOTER -->
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-plus-circle me-1"></i> Add Subcategory
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT SUBCATEGORY MODAL (NEW) -->
+    <div class="modal fade" id="editSubcatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="edit_subcategory">
+                    <input type="hidden" name="subcat_id" id="editSubcatId">
+                    <input type="hidden" name="product_id" id="editSubcatProductId">
+                    <input type="hidden" name="existing_subcat_image" id="editExistingSubcatImage">
+
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title"><i class="bi bi-pencil me-2"></i> Edit Subcategory</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Category Title</label>
-                            <input type="text" name="cate_title" id="editCatTitle" class="form-control" required>
+                            <label class="form-label">Group Name</label>
+                            <input type="text" name="group_name" id="editSubcatGroupName" class="form-control" list="group_names_list">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Category Image</label>
-                            <div class="mb-2">
-                                <img id="editImagePreview" src="" style="height: 60px; border-radius:4px;">
+                            <label class="form-label">Subcategory Title</label>
+                            <input type="text" name="subcat_title" id="editSubcatTitleText" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Subcategory Image</label>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img id="editSubcatPreview" src="" class="rounded border" height="60" style="object-fit: cover;">
                             </div>
-                            <input type="file" name="cat_image" class="form-control" accept="image/*">
+                            <input type="file" name="subcat_image" class="form-control" accept="image/*" onchange="previewEditSubImage(event)">
                             <small class="text-muted">Leave empty to keep existing image</small>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
-                            <textarea name="description" id="editDescription" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Description Image</label>
-                            <div class="mb-2">
-                                <img id="editDescImagePreview" src="" style="height: 60px; border-radius:4px;">
-                            </div>
-                            <input type="file" name="description_image" class="form-control" accept="image/*">
-                            <small class="text-muted">Leave empty to keep existing image</small>
-                        </div>
-                        <input type="hidden" name="existing_description_image" id="editExistingDescImage">
-
-                        <hr>
-                        <h6 class="text-primary">Add New Subcategory</h6>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Group Name</label>
-                                <input type="text" name="new_subcat_group" class="form-control" placeholder="e.g. Pattern A" list="edit_dynamic_list" autocomplete="off">
-                                <datalist id="edit_dynamic_list"></datalist>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Title</label>
-                                <input type="text" name="new_subcat_title" class="form-control">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Image</label>
-                            <input type="file" name="new_subcat_image" class="form-control" accept="image/*">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Changes</button>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4">Save Changes</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL (NEW) -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="mb-0 fs-5" id="deleteConfirmMessage">Are you sure you want to delete this item?</p>
+                    <small class="text-muted">This action cannot be undone and will permanently remove the record.</small>
+                </div>
+                <div class="modal-footer bg-light border-0 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                    <a href="#" id="deleteConfirmBtn" class="btn btn-danger px-4 shadow-sm">Delete Permanently</a>
+                </div>
             </div>
         </div>
     </div>
@@ -696,13 +957,75 @@ if (isset($_GET['msg'])) {
             <?php endforeach; ?>
     </datalist>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).ready(function() {
             // Initialize Tooltips
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+            // Handle Add Subcategory Click
+            $('.add-subcat-btn').click(function() {
+                var id = $(this).data('id');
+                var title = $(this).data('title');
+                $('#subcatProductId').val(id);
+                $('#subcatCategoryName').text(title);
+                
+                // Clear and show loading
+                $('#editSubcatListContainer').html('<div class="text-center py-3"><div class="spinner-border text-primary spinner-border-sm"></div></div>');
+                
+                $('#addSubcatModal').modal('show');
+
+                // Fetch existing subcategories
+                $.get('products-add.php?fetch_id=' + id, function(response) {
+                    if (response.status === 'success') {
+                        var subs = response.subcategories;
+                        var subHtml = '';
+                        if (subs.length > 0) {
+                            subHtml = '<div class="table-responsive"><table class="table table-sm align-middle">';
+                            subHtml += '<thead><tr><th>Image</th><th>Title</th><th>Group</th><th>Action</th></tr></thead><tbody>';
+                            subs.forEach(function(s) {
+                                var img = s.subcat_image ? 'images/products/' + s.subcat_image : 'images/placeholder.png';
+                                subHtml += '<tr>';
+                                subHtml += '<td><img src="' + img + '" class="rounded border" height="40" width="40" style="object-fit:cover;"></td>';
+                                subHtml += '<td>' + s.subcat_title + '</td>';
+                                subHtml += '<td><span class="group-badge">' + (s.group_name || 'General') + '</span></td>';
+                                subHtml += '<td>';
+                                subHtml += '<button type="button" class="btn btn-sm btn-outline-primary me-1 edit-sub-btn" data-id="' + s.id + '" data-prodid="' + id + '" data-title="' + s.subcat_title + '" data-group="' + (s.group_name || '') + '" data-img="' + s.subcat_image + '"><i class="bi bi-pencil"></i></button>';
+                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_sub_id=' + s.id + '" data-msg="Delete this subcategory?"><i class="bi bi-trash"></i></button>';
+                                subHtml += '</td></tr>';
+                            });
+                            subHtml += '</tbody></table></div>';
+                        } else {
+                            subHtml = '<p class="text-muted text-center py-3">No subcategories yet.</p>';
+                        }
+                        $('#editSubcatListContainer').html(subHtml);
+
+                        // Bind Edit Sub button
+                        $('.edit-sub-btn').click(function() {
+                            var sid = $(this).data('id');
+                            var pid = $(this).data('prodid');
+                            var stitle = $(this).data('title');
+                            var sgroup = $(this).data('group');
+                            var simg = $(this).data('img');
+
+                            $('#editSubcatId').val(sid);
+                            $('#editSubcatProductId').val(pid);
+                            $('#editSubcatTitleText').val(stitle);
+                            $('#editSubcatGroupName').val(sgroup);
+                            $('#editExistingSubcatImage').val(simg);
+                            
+                            if (simg) {
+                                $('#editSubcatPreview').attr('src', 'images/products/' + simg).show();
+                            } else {
+                                $('#editSubcatPreview').hide();
+                            }
+
+                            $('#editSubcatModal').modal('show');
+                        });
+                    }
+                });
+            });
 
             // Handle View Click
             $('.view-btn').click(function() {
@@ -728,17 +1051,39 @@ if (isset($_GET['msg'])) {
 
                         var subHtml = '';
                         if (subs.length > 0) {
+                            // Group subcategories by group_name
+                            var grouped = {};
                             subs.forEach(function(s) {
-                                var img = s.subcat_image ? 'images/products/' + s.subcat_image : 'images/placeholder.png';
                                 var grp = s.group_name ? s.group_name : 'General';
+                                if (!grouped[grp]) {
+                                    grouped[grp] = [];
+                                }
+                                grouped[grp].push(s);
+                            });
 
-                                subHtml += '<div class="subcat-item">';
-                                subHtml += '<div class="d-flex align-items-center">';
-                                subHtml += '<img src="' + img + '" class="subcat-img">';
-                                subHtml += '<div><strong>' + s.subcat_title + '</strong><span class="group-badge">' + grp + '</span></div>';
+                            // Display each group
+                            Object.keys(grouped).forEach(function(groupName) {
+                                var items = grouped[groupName];
+                                
+                                // Group header with delete button
+                                subHtml += '<div class="d-flex justify-content-between align-items-center mb-2 mt-3">';
+                                subHtml += '<h6 class="mb-0 text-primary"><i class="bi bi-folder me-1"></i>' + groupName + '</h6>';
+                                subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_group=' + encodeURIComponent(groupName) + '&product_id=' + prod.id + '" data-msg="Delete entire group ' + groupName.replace(/'/g, "\\'") + '? This will remove all ' + items.length + ' subcategories in this group."><i class="bi bi-trash me-1"></i>Delete Group</button>';
                                 subHtml += '</div>';
-                                subHtml += '<a href="products-add.php?delete_sub_id=' + s.id + '&parent_id=' + prod.id + '" class="btn btn-sm btn-outline-danger" onclick="return confirm(\'Delete this subcategory?\')" data-bs-toggle="tooltip" data-bs-title="Delete Subcategory"><i class="bi bi-trash"></i></a>';
-                                subHtml += '</div>';
+                                subHtml += '<hr class="mt-1 mb-2">';
+
+                                // Display subcategories in this group
+                                items.forEach(function(s) {
+                                    var img = s.subcat_image ? 'images/products/' + s.subcat_image : 'images/placeholder.png';
+                                    
+                                    subHtml += '<div class="subcat-item">';
+                                    subHtml += '<div class="d-flex align-items-center">';
+                                    subHtml += '<img src="' + img + '" class="subcat-img">';
+                                    subHtml += '<div><strong>' + s.subcat_title + '</strong></div>';
+                                    subHtml += '</div>';
+                                    subHtml += '<button type="button" class="btn btn-sm btn-outline-danger confirm-delete" data-href="products-add.php?delete_sub_id=' + s.id + '&parent_id=' + prod.id + '" data-msg="Delete this subcategory?" data-bs-toggle="tooltip" data-bs-title="Delete Subcategory"><i class="bi bi-trash"></i></button>';
+                                    subHtml += '</div>';
+                                });
                             });
                         } else {
                             subHtml = '<p class="text-muted text-center">No subcategories found.</p>';
@@ -789,6 +1134,17 @@ if (isset($_GET['msg'])) {
                 });
             });
 
+        }); // End of document.ready
+
+        // Centralized Delete Confirmation Logic
+        $(document).on('click', '.confirm-delete', function(e) {
+            e.preventDefault();
+            var href = $(this).attr('href') || $(this).data('href');
+            var msg = $(this).data('msg') || "Are you sure you want to delete this item?";
+            
+            $('#deleteConfirmMessage').text(msg);
+            $('#deleteConfirmBtn').attr('href', href);
+            $('#deleteConfirmModal').modal('show');
         });
     </script>
     <script>
@@ -804,10 +1160,28 @@ if (isset($_GET['msg'])) {
             img.classList.remove('d-none');
         }
 
-        function previewSubImage(event) {
-            const img = document.getElementById('subPreview');
+        function previewEditCatImage(event) {
+            const img = document.getElementById('editImagePreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.style.display = 'block';
+        }
+
+        function previewEditDescImage(event) {
+            const img = document.getElementById('editDescImagePreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.style.display = 'block';
+        }
+
+        function previewAddSubImage(event) {
+            const img = document.getElementById('addSubPreview');
             img.src = URL.createObjectURL(event.target.files[0]);
             img.classList.remove('d-none');
+        }
+
+        function previewEditSubImage(event) {
+            const img = document.getElementById('editSubcatPreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.style.display = 'block';
         }
     </script>
 
