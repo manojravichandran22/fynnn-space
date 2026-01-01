@@ -42,9 +42,30 @@ try {
         product_id INTEGER NOT NULL,
         subcat_title TEXT NOT NULL,
         subcat_image TEXT,
+        group_name TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
     )");
+
+    // Add description and description_image columns to products table if they don't exist
+    try {
+        $db->exec("ALTER TABLE products ADD COLUMN description TEXT");
+    } catch (Exception $e) {
+        // Column already exists, ignore
+    }
+    
+    try {
+        $db->exec("ALTER TABLE products ADD COLUMN description_image TEXT");
+    } catch (Exception $e) {
+        // Column already exists, ignore
+    }
+
+    // Add group_name column to product_subcategories if it doesn't exist
+    try {
+        $db->exec("ALTER TABLE product_subcategories ADD COLUMN group_name TEXT");
+    } catch (Exception $e) {
+        // Column already exists, ignore
+    }
 
 } catch (Exception $e) {
     die("Database connection error: " . $e->getMessage());

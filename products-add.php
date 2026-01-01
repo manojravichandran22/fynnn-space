@@ -111,9 +111,11 @@ if (isset($_GET['delete_sub_id'])) {
 // Save New Category (and optional Subcategory)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add_product') {
     $cate_title = $_POST['cate_title'];
+    $description = $_POST['description'] ?? '';
 
     // Upload Category Image
     $cat_image = '';
+    $description_image = '';
     $target_dir = "images/products/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
@@ -124,12 +126,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         move_uploaded_file($_FILES["cat_image"]["tmp_name"], $target_dir . $cat_image);
     }
 
+    if (!empty($_FILES["description_image"]["name"])) {
+        $description_image = time() . "_desc_" . basename($_FILES["description_image"]["name"]);
+        move_uploaded_file($_FILES["description_image"]["tmp_name"], $target_dir . $description_image);
+    }
+
     try {
         $db->beginTransaction();
 
         // Insert Category
-        $stmt = $db->prepare("INSERT INTO products (cate_title, cat_image) VALUES (?, ?)");
-        $stmt->execute([$cate_title, $cat_image]);
+        $stmt = $db->prepare("INSERT INTO products (cate_title, cat_image, description, description_image) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$cate_title, $cat_image, $description, $description_image]);
         $product_id = $db->lastInsertId();
 
         // Check if Subcategory was added
@@ -157,8 +164,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'edit_product') {
     $product_id = $_POST['product_id'];
     $cate_title = $_POST['cate_title'];
+    $description = $_POST['description'] ?? '';
 
     $cat_image = $_POST['existing_cat_image'];
+    $description_image = $_POST['existing_description_image'];
     $target_dir = "images/products/";
 
     if (!empty($_FILES["cat_image"]["name"])) {
@@ -166,9 +175,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         move_uploaded_file($_FILES["cat_image"]["tmp_name"], $target_dir . $cat_image);
     }
 
+    if (!empty($_FILES["description_image"]["name"])) {
+        $description_image = time() . "_desc_" . basename($_FILES["description_image"]["name"]);
+        move_uploaded_file($_FILES["description_image"]["tmp_name"], $target_dir . $description_image);
+    }
+
     try {
-        $stmt = $db->prepare("UPDATE products SET cate_title = ?, cat_image = ? WHERE id = ?");
-        $stmt->execute([$cate_title, $cat_image, $product_id]);
+        $stmt = $db->prepare("UPDATE products SET cate_title = ?, cat_image = ?, description = ?, description_image = ? WHERE id = ?");
+        $stmt->execute([$cate_title, $cat_image, $description, $description_image, $product_id]);
 
         // Also handle adding a NEW subcategory from the Edit modal if fields are present
         if (!empty($_POST['new_subcat_title']) && !empty($_FILES['new_subcat_image']['name'])) {
@@ -486,11 +500,35 @@ if (isset($_GET['msg'])) {
                                             height="70">
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea name="description"
+                                            class="form-control"
+                                            rows="3"
+                                            placeholder="Enter product description..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Description Image</label>
+                                        <input type="file"
+                                            name="description_image"
+                                            class="form-control"
+                                            accept="image/*"
+                                            onchange="previewDescImage(event)">
+                                        <img id="descPreview"
+                                            class="mt-2 rounded d-none border"
+                                            height="70">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- SUBCATEGORY CARD -->
-                        <div class="card border-0 shadow-sm">
+                        <!-- <div class="card border-0 shadow-sm">
                             <div class="card-body">
                                 <h6 class="fw-bold text-primary mb-3">
                                     <i class="bi bi-layers me-1"></i> Initial Subcategory (Optional)
@@ -527,7 +565,7 @@ if (isset($_GET['msg'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 
@@ -610,6 +648,19 @@ if (isset($_GET['msg'])) {
                             <input type="file" name="cat_image" class="form-control" accept="image/*">
                             <small class="text-muted">Leave empty to keep existing image</small>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" id="editDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description Image</label>
+                            <div class="mb-2">
+                                <img id="editDescImagePreview" src="" style="height: 60px; border-radius:4px;">
+                            </div>
+                            <input type="file" name="description_image" class="form-control" accept="image/*">
+                            <small class="text-muted">Leave empty to keep existing image</small>
+                        </div>
+                        <input type="hidden" name="existing_description_image" id="editExistingDescImage">
 
                         <hr>
                         <h6 class="text-primary">Add New Subcategory</h6>
@@ -709,12 +760,20 @@ if (isset($_GET['msg'])) {
                         var prod = response.product;
                         $('#editProductId').val(prod.id);
                         $('#editCatTitle').val(prod.cate_title);
+                        $('#editDescription').val(prod.description || '');
                         $('#editExistingImage').val(prod.cat_image);
+                        $('#editExistingDescImage').val(prod.description_image);
 
                         if (prod.cat_image) {
                             $('#editImagePreview').attr('src', 'images/products/' + prod.cat_image).show();
                         } else {
                             $('#editImagePreview').hide();
+                        }
+
+                        if (prod.description_image) {
+                            $('#editDescImagePreview').attr('src', 'images/products/' + prod.description_image).show();
+                        } else {
+                            $('#editDescImagePreview').hide();
                         }
 
                         // Populate Dynamic Group List
@@ -735,6 +794,12 @@ if (isset($_GET['msg'])) {
     <script>
         function previewCatImage(event) {
             const img = document.getElementById('catPreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.classList.remove('d-none');
+        }
+
+        function previewDescImage(event) {
+            const img = document.getElementById('descPreview');
             img.src = URL.createObjectURL(event.target.files[0]);
             img.classList.remove('d-none');
         }
