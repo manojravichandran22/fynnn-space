@@ -14,7 +14,9 @@ if (isset($_SESSION['user_id'])) {
         session_destroy();
         $_SESSION = array();
         // Redirect to same page but now logged out
-        header("Location: " . $_SERVER['PHP_SELF']);
+       // header("Location: " . $_SERVER['PHP_SELF']);
+       header("Location: " . strtok($_SERVER['REQUEST_URI'], '?'));
+
         exit();
     }
 }
@@ -47,26 +49,26 @@ if (isset($_SESSION['user_id'])) {
           
           
         <li class="nav-item ">
-          <a class="nav-link <?php if(isset($index)) { echo ' active '; } ?> "  href="index.php"><span>Home</span></a>
+          <a class="nav-link <?php if(isset($index)) { echo ' active '; } ?> "  href="/"><span>Home</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php if(isset($about)) { echo ' active '; } ?>  " href="about-us.php"><span>About Us</span></a>
+          <a class="nav-link <?php if(isset($about)) { echo ' active '; } ?>  " href="/about-us"><span>About Us</span></a>
         </li>
 			
          <li class="nav-item">
-          <a class="nav-link <?php if(isset($services)) { echo ' active '; } ?>  "   href="services.php"><span>Services</span></a>
+          <a class="nav-link <?php if(isset($services)) { echo ' active '; } ?>  "   href="/services"><span>Services</span></a>
         </li>
         
         <li class="nav-item">
-          <a class="nav-link k <?php if(isset($projects)) { echo ' active '; } ?>  "   href="projects.php"><span>Projects</span></a>
+          <a class="nav-link k <?php if(isset($projects)) { echo ' active '; } ?>  "   href="/projects"><span>Projects</span></a>
         </li>
         
           <li class="nav-item">
-          <a class="nav-link k <?php if(isset($products)) { echo ' active '; } ?>  "   href="products.php"><span>Products</span></a>
+          <a class="nav-link k <?php if(isset($products)) { echo ' active '; } ?>  "   href="/products"><span>Products</span></a>
         </li>
        
         <li class="nav-item">
-          <a class="nav-link <?php if(isset($contact)) { echo ' active '; } ?>  " href="contact-us.php"><span>Contact Us</span></a>
+          <a class="nav-link <?php if(isset($contact)) { echo ' active '; } ?>  " href="/contact-us"><span>Contact Us</span></a>
         </li>
           
           
@@ -85,9 +87,7 @@ if (isset($_SESSION['user_id'])) {
 
 </div>
 
-             <?php if (!isset($_SESSION['user_id'])): ?>
-                <a href="login.php" class="appointment_now" style="margin-left: 15px; padding: 7px 20px;">Login</a>
-             <?php endif; ?>
+
                     
                     </div>
 
