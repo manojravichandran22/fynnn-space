@@ -11,7 +11,7 @@ try {
 
         if (empty($username) || empty($password)) {
             $_SESSION['error'] = 'Username and password are required!';
-            header('Location: login.php');
+            header('Location: login');
             exit();
         }
 
@@ -26,16 +26,16 @@ try {
             $_SESSION['username'] = $user['username'];
 
             // Redirect to products-add page
-            header('Location: products-add.php');
+            header('Location: products-add');
             exit();
         } else {
             $_SESSION['error'] = 'Invalid username or password!';
-            header('Location: login.php');
+            header('Location: login');
             exit();
         }
     }
 } catch (Exception $e) {
     $_SESSION['error'] = 'Database error: ' . $e->getMessage();
-    header('Location: login.php');
+    header('Location: login');
     exit();
 }

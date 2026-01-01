@@ -5,7 +5,7 @@ require_once 'db_config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: login');
     exit();
 }
 
@@ -77,7 +77,7 @@ if (isset($_GET['delete_id'])) {
             }
         }
 
-        header("Location: products-add.php?msg=Category deleted successfully");
+        header("Location: products-add?msg=Category deleted successfully");
         exit();
     } catch (PDOException $e) {
         $error = "Error deleting category: " . $e->getMessage();
@@ -101,7 +101,7 @@ if (isset($_GET['delete_sub_id'])) {
             if (file_exists($file_path)) unlink($file_path);
         }
 
-        header("Location: products-add.php?msg=Subcategory deleted");
+        header("Location: products-add?msg=Subcategory deleted");
         exit();
     } catch (PDOException $e) {
         $error = "Error deleting subcategory: " . $e->getMessage();
@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         }
 
         $db->commit();
-        header("Location: products-add.php?msg=Product added successfully");
+        header("Location: products-add?msg=Product added successfully");
         exit();
     } catch (Exception $e) {
         $db->rollBack();
@@ -289,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
             $stmt_sub->execute([$product_id, $subcat_title, $subcat_image, $group_name]);
         }
 
-        header("Location: products-add.php?msg=Category updated successfully");
+        header("Location: products-add?msg=Category updated successfully");
         exit();
     } catch (Exception $e) {
         $error = "Error updating: " . $e->getMessage();
@@ -560,7 +560,7 @@ if (isset($_GET['msg'])) {
                 </div>
 
                 <!-- FORM -->
-                <form action="products-add.php" method="POST" enctype="multipart/form-data">
+                <form action="products-add" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add_product">
 
                     <div class="modal-body">
@@ -1037,7 +1037,7 @@ if (isset($_GET['msg'])) {
                 $('#viewCatImage').attr('src', '');
                 $('#viewSubcatList').html('<div class="text-center py-3"><div class="spinner-border text-primary"></div></div>');
 
-                $.get('products-add.php?fetch_id=' + id, function(response) {
+                $.get('products-add?fetch_id=' + id, function(response) {
                     if (response.status === 'success') {
                         var prod = response.product;
                         var subs = response.subcategories;
@@ -1100,7 +1100,7 @@ if (isset($_GET['msg'])) {
                 var id = $(this).data('id');
                 $('#editModal').modal('show');
 
-                $.get('products-add.php?fetch_id=' + id, function(response) {
+                $.get('products-add?fetch_id=' + id, function(response) {
                     if (response.status === 'success') {
                         var prod = response.product;
                         $('#editProductId').val(prod.id);

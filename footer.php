@@ -75,7 +75,7 @@ Tamil Nadu - 637001</a></span>
             <div class="footeraddout footdll">
 
 
-            <a class="navbar-brand" href="index.php"> <div class="footerlog"><div><img src="images/footer-logo.png" /></div></div></a>
+            <a class="navbar-brand" href="/"> <div class="footerlog"><div><img src="images/footer-logo.png" /></div></div></a>
              <p>At Fynn Space Interiors & Exteriors, we specialize in designing and delivering interiors and exteriors that are stylish, practical, and built to last.</p>
  
 </div>
@@ -123,7 +123,7 @@ Tamil Nadu - 637001</a></span>
 
 
 <div class="copy-22">
-<p style="padding-left:0px;"><a href="index.php">Home</a>/<a href="about-us.php">About Us</a>/<a href="services.php">Services</a>/ <a href="projects.php">Products</a>/<a href="products.php">Products</a>/<a href="contact-us.php">Contact Us</a></p>
+<p style="padding-left:0px;"><a href="/">Home</a>/<a href="/about-us">About Us</a>/<a href="/services">Services</a>/ <a href="/projects">Products</a>/<a href="/products">Products</a>/<a href="/contact-us">Contact Us</a></p>
 </div>
 </div>
 
