@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id'])) {
       class="navbar navbar-expand-lg navbar-light"
       aria-label="Main navigation"
     >
-    <a class="navbar-brand" href="index.php"><img src="images/logo.jpg" title=" Logo" alt='Logo"' /></a>
+    <a class="navbar-brand" href="/"><img src="images/logo.jpg" title=" Logo" alt='Logo"' /></a>
 
 
 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false"  aria-label=" Menu"

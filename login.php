@@ -106,7 +106,7 @@ session_start();
                             </div>
                         <?php } ?>
 
-                        <form action="login_process.php" method="post">
+                        <form action="login_process" method="post">
 
                             <!-- Username -->
                             <div class="mb-3">
