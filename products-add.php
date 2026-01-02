@@ -633,45 +633,7 @@ if (isset($_GET['msg'])) {
                             </div>
                         </div>
 
-                        <!-- SUBCATEGORY CARD -->
-                        <!-- <div class="card border-0 shadow-sm">
-                            <div class="card-body">
-                                <h6 class="fw-bold text-primary mb-3">
-                                    <i class="bi bi-layers me-1"></i> Initial Subcategory (Optional)
-                                </h6>
 
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Group Name</label>
-                                        <input type="text"
-                                            name="subcat_group"
-                                            class="form-control"
-                                            placeholder="e.g. 3MM Pattern"
-                                            list="group_names_list">
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Subcategory Title</label>
-                                        <input type="text"
-                                            name="subcat_title"
-                                            class="form-control"
-                                            placeholder="e.g. Marble Design">
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Subcategory Image</label>
-                                        <input type="file"
-                                            name="subcat_image"
-                                            class="form-control"
-                                            accept="image/*"
-                                            onchange="previewSubImage(event)">
-                                        <img id="subPreview"
-                                            class="mt-2 rounded d-none border"
-                                            height="60">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
 
                     </div>
 
@@ -696,12 +658,12 @@ if (isset($_GET['msg'])) {
 
 
     <!-- VIEW MODAL -->
-    <div class="modal fade" id="viewModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewModalTitle">Product Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal fade " id="viewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content ">
+                <div class="modal-header  bg-primary">
+                    <h5 class="modal-title " id="viewModalTitle">Product Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-4">
@@ -713,7 +675,7 @@ if (isset($_GET['msg'])) {
                             <p class="text-muted">Main Category</p>
                         </div>
                     </div>
-                    <h5 class="border-bottom pb-2">Subcategories / Designs</h5>
+                    <h5 class="border-bottom pb-2 text-primary">Subcategories / Designs</h5>
                     <div id="viewSubcatList">
                         <!-- Ajax Content -->
                         <div class="text-center py-3">
@@ -842,11 +804,28 @@ if (isset($_GET['msg'])) {
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Group Name</label>
-                                        <input type="text"
-                                            name="subcat_group"
-                                            class="form-control"
-                                            placeholder="e.g. 3MM Pattern"
-                                            list="group_names_list">
+                                        <select name="subcat_group" class="form-control" id="subcat_group_select" onchange="toggleCustomGroupInput(this)">
+                                            <option value="">-- Select Group --</option>
+                                            <?php foreach ($group_names as $gname): ?>
+                                                <option value="<?php echo htmlspecialchars($gname); ?>"><?php echo htmlspecialchars($gname); ?></option>
+                                            <?php endforeach; ?>
+                                            <option value="__custom__">Other (Type New)</option>
+                                        </select>
+                                        <input type="text" name="subcat_group_custom" id="subcat_group_custom" class="form-control mt-2" placeholder="Enter new group name" style="display:none;" />
+                                        <script>
+                                            function toggleCustomGroupInput(sel) {
+                                                var custom = document.getElementById('subcat_group_custom');
+                                                if (sel.value === '__custom__') {
+                                                    custom.style.display = '';
+                                                    custom.name = 'subcat_group';
+                                                    sel.name = 'subcat_group_old';
+                                                } else {
+                                                    custom.style.display = 'none';
+                                                    custom.name = 'subcat_group_custom';
+                                                    sel.name = 'subcat_group';
+                                                }
+                                            }
+                                        </script>
                                         <small class="text-muted">Optional - Groups subcategories together</small>
                                     </div>
 
@@ -1001,6 +980,13 @@ if (isset($_GET['msg'])) {
 
                 $('#addSubcatModal').modal('show');
 
+                // --- FIX: Reset Form and Previews ---
+                $('#addSubcatModal form')[0].reset();
+                $('#addSubPreview').addClass('d-none').attr('src', '');
+                $('#subcat_group_custom').hide().attr('name', 'subcat_group_custom');
+                $('#subcat_group_select').attr('name', 'subcat_group');
+                // --- END FIX ---
+
                 // Fetch existing subcategories
                 $.get('products-add?fetch_id=' + id, function(response) {
                     if (response.status === 'success') {
@@ -1026,6 +1012,26 @@ if (isset($_GET['msg'])) {
                         }
                         $('#editSubcatListContainer').html(subHtml);
 
+                        // --- FIX: Filter Group Name Dropdown for THIS product ---
+                        var groupSelect = $('#subcat_group_select');
+                        
+                        // Clear existing options except default and "Other"
+                        groupSelect.find('option').each(function() {
+                            var val = $(this).val();
+                            if (val !== "" && val !== "__custom__") {
+                                $(this).remove();
+                            }
+                        });
+
+                        // Add unique groups for this product
+                        if (response.unique_groups && response.unique_groups.length > 0) {
+                            response.unique_groups.forEach(function(g) {
+                                // Add before the "__custom__" option
+                                $('<option>').val(g).text(g).insertBefore(groupSelect.find('option[value="__custom__"]'));
+                            });
+                        }
+                        // --- END FIX ---
+
                         // Bind Edit Sub button
                         $('.edit-sub-btn').click(function() {
                             var sid = $(this).data('id');
@@ -1045,6 +1051,16 @@ if (isset($_GET['msg'])) {
                             } else {
                                 $('#editSubcatPreview').hide();
                             }
+
+                            // --- FIX: Filter Group Name Datalist for THIS product ---
+                            var dl = $('#group_names_list');
+                            dl.empty();
+                            if (response.unique_groups && response.unique_groups.length > 0) {
+                                response.unique_groups.forEach(function(g) {
+                                    dl.append('<option value="' + g + '">');
+                                });
+                            }
+                            // --- END FIX ---
 
                             $('#editSubcatModal').modal('show');
                         });
