@@ -989,6 +989,13 @@ pointer-events: none;
   background: url('../images/banner2.jpg') no-repeat;
   background-size: cover;
 }
+.bannercont3
+{
+  float: left;
+  width: 100%;
+  background: url('../images/banner3.jpg') no-repeat;
+  background-size: cover;
+}
 .bnner_contdet
 {
   float: left;

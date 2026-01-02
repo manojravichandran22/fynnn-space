@@ -68,6 +68,20 @@ session_start();
           </div>
 
         </div>
+        <div class="item_new">
+          <div class="bannercont3">
+            <div class="bnner_contdet">
+              <h2>Crafted for <br />
+                <span>Modern Living <br /></span>
+                Excellence
+              </h2>
+
+              <p>Innovative interior and exterior solutions tailored for comfort, durability, and style.</p>
+              <p>
+
+            </div>
+          </div>
+        </div>
 
       </div>
 

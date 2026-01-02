@@ -112,6 +112,13 @@ $('.lightbox').littleLightBox();
           </a>
         </div>
       </div>
+            <div class="col-md-3 smmob">
+        <div class="projecthomeout">
+          <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
+          <div class="projimg"><img src="images/project/bedroom/7.jpg"></div>
+          </a>
+        </div>
+      </div>
 
 
     

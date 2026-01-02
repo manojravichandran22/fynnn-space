@@ -28,7 +28,7 @@ include('header.php'); ?>
 <div class="slipheader">
 
 <div class="abouthead">
-        <h3>Modular Kitchen</h3>
+        <h3>Interior</h3>
         <ul class="about-short">
 <li><a href="index.php">Home</a> <span>/</span></li>
 <li><a href="projects.php">Projects</a> </li>
@@ -62,49 +62,17 @@ $('.lightbox').littleLightBox();
       <div class="col-md-3 smmob">
         <div class="projecthomeout">
           <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
-          <div class="projimg"><img src="images/project/modular-kitchen/1.jpg"></div>
+          <div class="projimg"><img src="images/project/interior/1.jpeg"></div>
           </a>
         </div>
       </div>
-
-      
-
       <div class="col-md-3 smmob">
         <div class="projecthomeout">
           <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
-          <div class="projimg"><img src="images/project/modular-kitchen/2.jpg"></div>
+          <div class="projimg"><img src="images/project/interior/2.jpeg"></div>
           </a>
         </div>
       </div>
-      
-      
-      <div class="col-md-3 smmob">
-        <div class="projecthomeout">
-          <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
-          <div class="projimg"><img src="images/project/modular-kitchen/6.jpg"></div>
-          </a>
-        </div>
-      </div>
-      
-      
-       <div class="col-md-3 smmob">
-        <div class="projecthomeout">
-          <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
-          <div class="projimg"><img src="images/project/modular-kitchen/4.jpg"></div>
-          </a>
-        </div>
-      </div>
-       <div class="col-md-3 smmob">
-        <div class="projecthomeout">
-          <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
-          <div class="projimg"><img src="images/project/modular-kitchen/7.jpg"></div>
-          </a>
-        </div>
-      </div>
-      
-      
-
-
         
         <div class="clear"></div>
 

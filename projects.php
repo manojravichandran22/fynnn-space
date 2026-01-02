@@ -129,6 +129,33 @@ include('header.php'); ?>
 
         </div>
       </div>
+      <div class="col-md-3 smmob">
+        <div class="projecthomeout">
+          <a href="interior.php">
+          <div class="projimg"><img src="images/project/10.jpeg"></div>
+          <h6>Interior</h6>
+</a>
+
+        </div>
+      </div>
+      <div class="col-md-3 smmob">
+        <div class="projecthomeout">
+          <a href="exterior.php">
+          <div class="projimg"><img src="images/project/9.jpeg"></div>
+          <h6>Exterior</h6>
+</a>
+
+        </div>
+      </div>
+      <div class="col-md-3 smmob">
+        <div class="projecthomeout">
+          <!-- <a href="exterior.php"> -->
+          <div class="projimg"><img src="images/project/11.jpeg"></div>
+          <h6>Roofings</h6>
+</a>
+
+        </div>
+      </div>
 
 
 
