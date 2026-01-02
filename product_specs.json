@@ -56,7 +56,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/pgsheets.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Anti Corrosive"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/recycle.png",
+                    "title": "Reuse"
+                },
+                {
+                    "icon": "images/products/advimages/Natural_Marble_Look.png",
+                    "title": "Natural Marble Look"
                 }
             ]
         },
@@ -112,7 +141,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/stonepanel.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Termite Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/recycle.png",
+                    "title": "Reuse"
+                },
+                {
+                    "icon": "images/products/advimages/Natural_Marble_Look.png",
+                    "title": "Natural Marble Look"
                 }
             ]
         },
@@ -172,7 +230,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/wpc.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/light-weight.png",
+                    "title": "Light Weight"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/recycle.png",
+                    "title": "Reuse"
+                },
+                {
+                    "icon": "images/products/advimages/Natural_Marble_Look.png",
+                    "title": "Natural Marble Look"
                 }
             ]
         },
@@ -236,7 +323,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/wpce.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Anti Corrosive"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/recycle.png",
+                    "title": "Reuse"
+                },
+                {
+                    "icon": "images/products/advimages/Natural_Marble_Look.png",
+                    "title": "Natural Marble Look"
                 }
             ]
         },
@@ -296,7 +412,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/spc.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/pest-control.png",
+                    "title": "Termite Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Proof"
+                },
+                {
+                    "icon": "images/products/advimages/scratch.png",
+                    "title": "Scratches Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/Durability.png",
+                    "title": "Durability"
                 }
             ]
         },
@@ -360,7 +505,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/softfit.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Anti Bacterial"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/light-weight.png",
+                    "title": "Light Weight"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         },
@@ -424,7 +598,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/softfitfl.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Anti Bacterial"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/light-weight.png",
+                    "title": "Light Weight"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         },
@@ -488,7 +691,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/softfitex.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/wipe.png",
+                    "title": "Easy to Clean"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Anti Bacterial"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/light-weight.png",
+                    "title": "Light Weight"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         },
@@ -540,7 +772,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/pustone.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/light-weight.png",
+                    "title": "Light Weight"
+                },
+                {
+                    "icon": "images/products/advimages/share.png",
+                    "title": "Cost Effective"
+                },
+                {
+                    "icon": "images/products/advimages/planting.png",
+                    "title": "Eco Friendly"
+                },
+                {
+                    "icon": "images/products/advimages/gear.png",
+                    "title": "Low Maintenance"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/thermal-insulation.png",
+                    "title": "Thermal Insulation"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         },
@@ -600,7 +861,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/bamboo.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Anti Bacterial"
+                },
+                {
+                    "icon": "images/products/advimages/cut-with-scissors.png",
+                    "title": "Easy Cut"
+                },
+                {
+                    "icon": "images/products/advimages/Durability.png",
+                    "title": "Durability"
+                },
+                {
+                    "icon": "images/products/advimages/versatile.png",
+                    "title": "Versatile Applications"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/water-resistant.png",
+                    "title": "Water Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/non-toxic.png",
+                    "title": "Non Toxic"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         },
@@ -715,7 +1005,36 @@
             ],
             "image": [
                 {
-                    "image": "images/products/advimages/softcoat.png"
+                    "icon": "images/products/advimages/Easy_to_Install.png",
+                    "title": "Easy to Install"
+                },
+                {
+                    "icon": "images/products/advimages/no-rain-water-sound.png",
+                    "title": "No Rain Water Sound"
+                },
+                {
+                    "icon": "images/products/advimages/Anti_Corrosive.png",
+                    "title": "Corrosion Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/planting.png",
+                    "title": "Eco Friendly"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Strong (High Quality)"
+                },
+                {
+                    "icon": "images/products/advimages/Fire_Resistant.png",
+                    "title": "Fire Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/rainy.png",
+                    "title": "Weather Resistant"
+                },
+                {
+                    "icon": "images/products/advimages/eye.png",
+                    "title": "Seamless Look"
                 }
             ]
         }

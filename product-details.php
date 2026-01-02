@@ -136,27 +136,46 @@ include('header.php'); ?>
     </div>
 </section>
 <!-- Advantages & Features Section -->
-<!-- <section class="advantages-section" style="padding: 40px 0; ">
+<section class="advantages-section" style="padding: 40px 0; ">
     <div class="auto-container">
         <div class="headingparr" style="margin-bottom: 30px; text-align: center !important;">
             <h3 style="text-align: center !important;">Advantages & Features</h3>
         </div>
         
         <?php if (!empty($specs['image'])): ?>
-            <div class="row clearfix">
-                <?php foreach ($specs['image'] as $img): ?>
-                    <?php if (!empty($img['image'])): ?>
-                        <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 30px; text-align: center;">
-                            <img src="<?php echo htmlspecialchars($img['image']); ?>" alt="Advantage" style="width: 1000px; max-width: 100%; height: auto; border-radius: 10px;">
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
+            <?php if (count($specs['image']) === 1 && empty($specs['image'][0]['title'])): ?>
+                <!-- Single Banner Image Case -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 30px; text-align: center;">
+                        <img src="<?php echo htmlspecialchars($specs['image'][0]['image'] ?? $specs['image'][0]['icon']); ?>" alt="Advantage" style="width: 1000px; max-width: 100%; height: auto; border-radius: 10px;">
+                    </div>
+                </div>
+            <?php else: ?>
+                <!-- Multi-Icon Grid Case -->
+                <div class="container" style="max-width: 1500px; margin-bottom: 30px;">
+                    <div class="row justify-content-center text-center">
+                        <?php foreach ($specs['image'] as $adv): ?>
+                            <?php 
+                            $iconSrc = $adv['icon'] ?? ($adv['image'] ?? '');
+                            $iconTitle = $adv['title'] ?? '';
+                            if (!empty($iconSrc)): 
+                            ?>
+                                <div class="col-6 col-md-3 col-lg-1 mb-4">
+                                    <div class="advantage-box">
+                                        <img src="<?php echo htmlspecialchars($iconSrc); ?>" alt="<?php echo htmlspecialchars($iconTitle); ?>" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 12px; display: inline-block;">
+                                        <h6 style="font-size: 14px; font-weight: 500; color: #333; line-height: 1.2; margin: 0;"><?php echo htmlspecialchars($iconTitle); ?></h6>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
         <?php else: ?>
             <p>Content coming soon...</p>
         <?php endif; ?>
     </div>
-</section> -->
+</section>
 
 <div class="clearfix"></div>
 
