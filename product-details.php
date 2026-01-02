@@ -135,16 +135,10 @@ try {
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
     </div>
 </section>
 <!-- Advantages & Features Section -->
 <section class="advantages-section" style="padding: 40px 0; ">
-=======
-    </section>
-    <!-- Advantages & Features Section -->
-    <!-- <section class="advantages-section" style="padding: 40px 0; ">
->>>>>>> b396c09b1e9750e7b49dcd1f2c0fce9ddf6ad353
     <div class="auto-container">
         <div class="headingparr" style="margin-bottom: 30px; text-align: center !important;">
             <h3 style="text-align: center !important;">Advantages & Features</h3>
