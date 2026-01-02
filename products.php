@@ -59,8 +59,8 @@ include('header.php'); ?>
                   <div class="col-md-3 smmob">
                     <div class="projecthomeout">
                       <a href="product-details?id=<?php echo $row['id']; ?>">
-                      <div class="projimg"><img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($row['cate_title']); ?>" style="width:100%; height:400px; object-fit:cover;"></div>
-                      <h6><?php echo htmlspecialchars($row['cate_title']); ?></h6>
+                      <div class="projimg" style="aspect-ratio: auto; height: 300px;"><img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($row['cate_title']); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                      <h6 style="color: #101010; margin-top: 15px; font-weight: 500;"><?php echo htmlspecialchars($row['cate_title']); ?></h6>
                       </a>
                     </div>
                   </div>
