@@ -18,7 +18,7 @@
 
               <ul class="footeriul">
                 <li><img src="images/footer-call.png"/>
-                <span><a  href="tel:+919514991999">+91 9514991999,</a> <a  href="tel:+919514992999">9514992999</a></span>
+                <span><a  href="tel:+919514991999">+91 95149 91999,</a> <a  href="tel:+919514992999">+91 95149 92999</a></span>
               </li>
                 <li><img src="images/footer-sms.png"/>
                 <span><a href="mailto:info@fynn.com">fynnspace@hotmail.com</a></span>

@@ -1,6 +1,14 @@
 <?php
 ob_start();
 session_start();
+$msg_status = "";
+if(isset($_POST['name']) && isset($_POST['captcha_code'])){
+	if($_SESSION['captcha_code'] == $_POST['captcha_code']){
+		$msg_status = "success";
+	}else{
+		$msg_status = "error";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +80,10 @@ include('header.php'); ?>
      </div>  
      <span>
      <strong>Call Us</strong>
-       <a href="tel: +91 9514991999" class="ss-out1"> +91 95149 91999</a> 
-      <a href="tel: +91 9514992999" class="ss-out1"> +91 9514992999</a>
+     <div>
+       <a href="tel: +91 9514991999" class="ss-out1"> +91 95149 91999 ,</a><br>
+       <a href="tel: +91 9514992999" class="ss-out1"> +91 95149 92999</a>
+     </div>
      </span>
       </div> 
       
@@ -123,49 +133,71 @@ include('header.php'); ?>
 
 
 <div class="so-11">
-<h4>Follow on social :</h4>
+<h4>Follow Us on social :</h4>
 </div>
 
 
 
 
 <div class="so-22">
-         
-      <div class="social1">
-        <a href="#" target="_blank"> <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                               
-  <g clip-path="url(#clip0_101_1050)">
-    <path d="M7 10V14H10V21H14V14H17L18 10H14V8C14 7.73478 14.1054 7.48043 14.2929 7.29289C14.4804 7.10536 14.7348 7 15 7H18V3H15C13.6739 3 12.4021 3.52678 11.4645 4.46447C10.5268 5.40215 10 6.67392 10 8V10H7Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-  </g>
-  <defs>
-    <clipPath id="clip0_101_1050">
-      <rect width="24" height="24" fill="white"></rect>
-    </clipPath>
-  </defs>
-</svg></i></a>
-           </div>
-           
-             <div class="social1" >
-             <a href="https://www.instagram.com/fynnspace_interiors/"  target="_blank">  <i><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"></path><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path><path d="M16.5 7.5v.01"></path></svg></i></a>
-        </div>
-           
 
-          <div class="social1" >
-                                                                                                          <span style="color: #fff;" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"></path></svg></span>
+  <!-- Facebook -->
+  <div class="social1">
+    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+      <i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <g clip-path="url(#clip0_101_1050)">
+            <path d="M7 10V14H10V21H14V14H17L18 10H14V8C14 7.73478 14.1054 7.48043 14.2929 7.29289C14.4804 7.10536 14.7348 7 15 7H18V3H15C13.6739 3 12.4021 3.52678 11.4645 4.46447C10.5268 5.40215 10 6.67392 10 8V10H7Z"
+              stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </svg>
+      </i>
+    </a>
+  </div>
+
+  <!-- Instagram (already correct) -->
+  <div class="social1">
+    <a href="https://www.instagram.com/fynnspace_interiors/" target="_blank" rel="noopener noreferrer">
+      <i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/>
+          <path d="M9 12a3 3 0 1 0 6 0"/>
+          <path d="M16.5 7.5v.01"/>
+        </svg>
+      </i>
+    </a>
+  </div>
+
+  <!-- WhatsApp (FIXED) -->
+  <div class="social1">
+    <a href="https://wa.me/919514991999" target="_blank" rel="noopener noreferrer">
+      <i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/>
+          <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1"/>
+        </svg>
+      </i>
+    </a>
+  </div>
+
+  <!-- Twitter / X -->
+  <div class="social1">
+    <a href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer">
+      <i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor"
+          viewBox="0 0 16 16">
+          <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+        </svg>
+      </i>
+    </a>
+  </div>
 
 </div>
-          
-                       <div class="social1" >
-           
-      <a href="#"  target="_blank">      <i> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
-  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-</svg></i></a>
-         
-          </div>
-           
-        
-          
-</div>
+
 </div>
 
 </div><!--col-lg-6-->
@@ -180,6 +212,12 @@ include('header.php'); ?>
    <h4>Send a message</h4>
                 
     <div class="row">
+
+<?php if($msg_status == "success"){ ?>
+	<div class="alert alert-success">Message Sent Successfully!</div>
+<?php } else if($msg_status == "error"){ ?>
+	<div class="alert alert-danger">Invalid Captcha. Please try again.</div>
+<?php } ?>
 
 
 
@@ -280,5 +318,11 @@ include('header.php'); ?>
 
 <?php include('website-js.php'); ?>
 
+<script>
+function refreshCaptcha(){
+	var img = document.images['captchaimg'];
+	img.src = img.src.substring(0,img.src.lastIndexOf("?"))+"?rand="+Math.random()*1000;
+}
+</script>
 </body>
 </html>

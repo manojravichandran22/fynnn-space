@@ -1,9 +1,7 @@
 <?php
-	session_start();
-	include("./phptextClass.php");	
-	
-	/*create class object*/
-	$phptextObj = new phptextClass();	
-	/*phptext function to genrate image with text*/
-	$phptextObj->phpcaptcha('#bb141b','#fff',100,40,10,25);	
- ?>
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("./phptextClass.php");
+$phptextObj = new phptextClass();
+$phptextObj->phpcaptcha('#bb141b','#ffffff',120,40,0,0);
