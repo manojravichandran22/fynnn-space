@@ -59,13 +59,13 @@ $('.lightbox').littleLightBox();
 
 
 
-      <div class="col-md-3 smmob">
+      <!-- <div class="col-md-3 smmob">
         <div class="projecthomeout">
           <a class="lightbox thumbnail attractions-gallery" data-littlelightbox-group="gallery" >
           <div class="projimg"><img src="images/project/modular-kitchen/1.jpg"></div>
           </a>
         </div>
-      </div>
+      </div> -->
 
       
 

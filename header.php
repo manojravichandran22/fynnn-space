@@ -81,7 +81,12 @@ if (isset($_SESSION['user_id'])) {
 
 <div class="reqcall"><div class="topicons"><img src="images/top-mob.png" /></div>
 <a  href="tel:+919514991999">+91 9514991999</a></div>
-<div class="reqcall"><div class="topicons2 "><a href="mailto:info@fynn.com"><img src="images/top-email.png" /></a></div>
+<div class="reqcall">
+  <!-- <div class="topicons2 ">
+    <a href="mailto:info@fynn.com">
+      <img src="images/top-email.png" />
+    </a>
+  </div> -->
 <?php /*?><a style="display:none" href="mailto:info@fynn.com">info@fynn.com</a><?php */?></div>
 
 
