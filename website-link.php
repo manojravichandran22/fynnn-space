@@ -1,4 +1,4 @@
-<title>Welcom to Fynn Space</title>
+<title>Welcome to Fynn Space</title>
 
 <script src="js/jquery-3.7.1.min.js" type="text/javascript"></script>
 <script src="js/bootstrap.bundle.min.js" type="text/javascript" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

@@ -165,7 +165,7 @@ session_start();
         <p>At FYNN SPACE, we design and deliver interior & exterior solutions that blend functionality, elegance, and durability. Based in Namakkal, we've been creating dream spaces for over 3 years, completing both residential and commercial projects with unmatched quality and customer satisfaction.
         </p>
 
-        <a class="appointment_now" href="about-us.php"><img src="images/about-icon.png" /> About More</a>
+        <a class="appointment_now" href="about-us.php"><img src="images/about-icon.png" /> About Us</a>
       </div>
 
 

@@ -1,13 +1,44 @@
 <?php
 ob_start();
 session_start();
+include('smtp_config.php');
+include('db_config.php');
 $msg_status = "";
 if(isset($_POST['name']) && isset($_POST['captcha_code'])){
 	if($_SESSION['captcha_code'] == $_POST['captcha_code']){
-		$msg_status = "success";
+        try {
+            $stmt = $db->prepare("INSERT INTO contact_inquiries (name, email, mobile, subject, message) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $_POST['name'],
+                $_POST['email'],
+                $_POST['mob'],
+                $_POST['sub'],
+                $_POST['msg']
+            ]);
+            sendContactMail([
+                'name'  => $_POST['name'],
+                'email' => $_POST['email'],
+                'mob'   => $_POST['mob'],
+                'sub'   => $_POST['sub'],
+                'msg'   => $_POST['msg'],
+            ]);
+
+            $_SESSION['msg_status'] = "success";
+            header("Location: contact-us.php");
+            exit();
+        } catch (Exception $e) {
+            $_SESSION['msg_status'] = "error_db";
+            header("Location: contact-us.php");
+            exit();
+        }
 	}else{
 		$msg_status = "error";
 	}
+}
+
+if(isset($_SESSION['msg_status'])){
+    $msg_status = $_SESSION['msg_status'];
+    unset($_SESSION['msg_status']);
 }
 ?>
 <!DOCTYPE html>
@@ -159,13 +190,7 @@ include('header.php'); ?>
   <div class="social1">
     <a href="https://www.instagram.com/fynnspace_interiors/" target="_blank" rel="noopener noreferrer">
       <i>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z"/>
-          <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/>
-          <path d="M9 12a3 3 0 1 0 6 0"/>
-          <path d="M16.5 7.5v.01"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"></path><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path><path d="M16.5 7.5v.01"></path></svg>
       </i>
     </a>
   </div>
@@ -207,16 +232,18 @@ include('header.php'); ?>
 <div class="col-lg-6" data-aos="fade-left"  data-aos-delay="200" data-aos-duration="1000" >
 
 
-<form action="" enctype="multipart/form-data" method="post" autocomplete="off">
+<form action="" enctype="multipart/form-data" method="post" autocomplete="off" id="contactForm">
    <div class="co-in1">
    <h4>Send a message</h4>
                 
     <div class="row">
 
 <?php if($msg_status == "success"){ ?>
-	<div class="alert alert-success">Message Sent Successfully!</div>
+	<div class="alert alert-success" id="status-alert">Message Sent Successfully!</div>
 <?php } else if($msg_status == "error"){ ?>
-	<div class="alert alert-danger">Invalid Captcha. Please try again.</div>
+	<div class="alert alert-danger" id="status-alert">Invalid Captcha. Please try again.</div>
+<?php } else if($msg_status == "error_db"){ ?>
+	<div class="alert alert-danger" id="status-alert">Something went wrong. Please try again later.</div>
 <?php } ?>
 
 
@@ -224,7 +251,7 @@ include('header.php'); ?>
 <div class=" col-lg-6 col-md-6 col-sm-12 ">
 <div class="ic-in">
 
-<input class="ic-in1" name="name" type="text" class="form-control3 onlytext" required="" placeholder=" Your Name*"  />
+<input class="ic-in1 form-control3 onlytext" name="name" type="text" required="" placeholder=" Your Name*"  />
 </div>
 </div>
 
@@ -232,7 +259,7 @@ include('header.php'); ?>
 <div class=" col-lg-6 col-md-6 col-sm-12 ">
 <div class="ic-in">
 
-<input class="ic-in1" name="email" type="email" class="form-control3" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$" title="Please Enter Valid Email ID" required="" placeholder=" Your Email*" />
+<input class="ic-in1 form-control3" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$" title="Please Enter Valid Email ID" required="" placeholder=" Your Email*" />
 </div>
 </div>
 
@@ -241,7 +268,7 @@ include('header.php'); ?>
 <div class=" col-lg-6 col-md-6 col-sm-12 ">
 <div class="ic-in">
 
-<input class="ic-in1" name="mob" type="text" class="form-control3" pattern="[5-9]{1}[0-9]{9}" maxlength="10" onKeyPress="return isNumberKey(event)" title="Please Enter 10 Digit Mobile Number" required="" placeholder="Mobile Number*" />
+<input class="ic-in1 form-control3" name="mob" type="text" pattern="[5-9]{1}[0-9]{9}" maxlength="10" onKeyPress="return isNumberKey(event)" title="Please Enter 10 Digit Mobile Number" required="" placeholder="Mobile Number*" />
 </div>
 </div>
 
@@ -249,7 +276,7 @@ include('header.php'); ?>
 <div class=" col-lg-6 col-md-6 col-sm-12 ">
 <div class="ic-in">
 
-<input class="ic-in1" name="sub" type="text" class="form-control3 onlytext" required="" placeholder="Subject"  />
+<input class="ic-in1 form-control3 onlytext" name="sub" type="text" required="" placeholder="Subject"  />
 
 </div>
 </div>
@@ -260,7 +287,7 @@ include('header.php'); ?>
 <div class=" col-lg-12 col-md-12 col-sm-12">
 <div class="ic-in">
 
-<textarea class="ic-in1" name="msg" required="" class="form-control3 text-formcontrol2" placeholder="Message" style="float:left;"></textarea
+<textarea class="ic-in1 form-control3 text-formcontrol2" name="msg" required="" placeholder="Message" style="float:left;"></textarea
 ></div>
 </div>
 
@@ -323,6 +350,25 @@ function refreshCaptcha(){
 	var img = document.images['captchaimg'];
 	img.src = img.src.substring(0,img.src.lastIndexOf("?"))+"?rand="+Math.random()*1000;
 }
+</script>
+
+<?php if($msg_status == "success") { ?>
+<script>
+    document.getElementById('contactForm').reset();
+</script>
+<?php } ?>
+
+<script>
+    setTimeout(function() {
+        var alert = document.getElementById('status-alert');
+        if (alert) {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500);
+        }
+    }, 5000);
 </script>
 </body>
 </html>

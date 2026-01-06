@@ -482,7 +482,7 @@ if (isset($_GET['msg'])) {
                 <div class="d-flex justify-content-between align-items-center">
                     <h1>Product List</h1>
                     <div>
-                        <span class="me-3 text-white">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                        <span class="me-3 text-white">Welcome, <?php echo htmlspecialchars(strtoupper($_SESSION['username'])); ?></span>
                         <a href="logout.php" class="btn btn-sm btn-outline-light">Logout</a>
                     </div>
                 </div>

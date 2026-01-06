@@ -69,6 +69,17 @@ try {
         // Column already exists, ignore
     }
 
+    // Create contact_inquiries table
+    $db->exec("CREATE TABLE IF NOT EXISTS contact_inquiries (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        mobile TEXT NOT NULL,
+        subject TEXT,
+        message TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )");
+
 } catch (Exception $e) {
     die("Database connection error: " . $e->getMessage());
 }
