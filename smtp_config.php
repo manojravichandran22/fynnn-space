@@ -17,14 +17,14 @@ function sendContactMail($data)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'manojkumar.work1@gmail.com';
+        $mail->Username   = 'fynnspace@hotmail.com';
         $mail->Password   = 'iptx veck fhhp bhui';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         // EMAIL HEADERS
-        $mail->setFrom('manojkumar.work1@gmail.com', 'Website Contact');
-        $mail->addAddress('manojkumar.work1@gmail.com'); // where you receive mail
+        $mail->setFrom('fynnspace@hotmail.com', 'Fynn Space Website');
+        $mail->addAddress('fynnspace@hotmail.com'); // where you receive mail
         $mail->addReplyTo($data['email'], $data['name']);
 
         // EMAIL CONTENT
